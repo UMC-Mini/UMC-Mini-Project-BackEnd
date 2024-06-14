@@ -1,8 +1,9 @@
 spring:
   datasource:
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    url: ${DB_URL}
+    username: root
+    password: smupool1234
+    url: jdbc:mysql://smupool-rds.cjwyoemwsj24.ap-northeast-2.rds.amazonaws.com/smupool
+
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     properties:
