@@ -6,4 +6,5 @@ import com.miniproject.demo.dto.ChatBot.ChatBotResponseDTO;
 
 public interface ChatBotService {
     ChatBotResponseDTO.CreateChatBotResultDTO createChatBot(ChatBotRequestDTO.CreateChatBotDTO createChatBotDTO);
+    void sendMessage(ChatBotRequestDTO.ChatBotMessageDTO chatBotMessageDTO);
 }

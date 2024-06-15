@@ -12,4 +12,12 @@ public class ChatBotRequestDTO {
         @NotEmpty(message = "Phone number cannot be empty")
         private String phoneNumber;
     }
+
+    @Getter
+    public static class ChatBotMessageDTO{
+        private String content;
+        private String imageUrl;
+        private String sender;
+        private String chatBotRoomId;
+    }
 }

@@ -8,6 +8,9 @@ import com.miniproject.demo.global.response.code.status.ErrorStatus;
 import com.miniproject.demo.global.response.code.status.SuccessStatus;
 import com.miniproject.demo.service.ChatBot.ChatBotService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +31,13 @@ public class ChatBotController {
         }catch(NoSuchElementException e){
             return BaseResponse.onFailure(ErrorStatus.CHATBOT_ROOM_CREATE_FAIL.getMessage(), ErrorStatus.CHATBOT_ROOM_CREATE_FAIL.getCode(), null);
         }
+    }
+
+    @MessageMapping("/sendMessage")
+    @SendTo("/topic/{chatBotRoomId}")
+    public void sendMessage(@Payload ChatBotRequestDTO.ChatBotMessageDTO chatBotMessageDTO){
+        chatBotService.sendMessage(chatBotMessageDTO);
+
     }
 
 

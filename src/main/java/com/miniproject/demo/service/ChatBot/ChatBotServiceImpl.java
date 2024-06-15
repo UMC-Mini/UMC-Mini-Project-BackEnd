@@ -1,25 +1,36 @@
 package com.miniproject.demo.service.ChatBot;
 
+import com.miniproject.demo.domain.ChatBot.ChatBotMessage;
 import com.miniproject.demo.domain.ChatBot.ChatBotRoom;
 import com.miniproject.demo.domain.ChatBot.ChatBotUser;
 import com.miniproject.demo.dto.ChatBot.ChatBotRequestDTO;
 import com.miniproject.demo.dto.ChatBot.ChatBotResponseDTO;
+import com.miniproject.demo.global.error.handler.ChatBotRoomHandler;
+import com.miniproject.demo.global.response.code.status.ErrorStatus;
+import com.miniproject.demo.repository.ChatBot.ChatBotMessageRepository;
 import com.miniproject.demo.repository.ChatBot.ChatBotRoomRepository;
 import com.miniproject.demo.repository.ChatBot.ChatBotUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.miniproject.demo.dto.ChatBot.Converter.ChatBotConverter.toCreateChatBotResultDTO;
-import static com.miniproject.demo.dto.ChatBot.Converter.ChatBotConverter.toUser;
+import java.util.NoSuchElementException;
+
+import static com.miniproject.demo.dto.ChatBot.Converter.ChatBotConverter.*;
 
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+
 public class ChatBotServiceImpl implements  ChatBotService {
     private final ChatBotUserRepository chatBotUserRepository;
     private final ChatBotRoomRepository chatBotRoomRepository;
+    private final ChatBotMessageRepository chatBotMessageRepository;
+    @Autowired
+    SimpMessagingTemplate template;
 
     @Override
     public ChatBotResponseDTO.CreateChatBotResultDTO createChatBot(ChatBotRequestDTO.CreateChatBotDTO createChatBotDTO){
@@ -30,5 +41,19 @@ public class ChatBotServiceImpl implements  ChatBotService {
         chatBotRoomRepository.save(chatBotRoom);
 
         return toCreateChatBotResultDTO(chatBotRoom);
+    }
+
+    @Override
+    public void sendMessage (ChatBotRequestDTO.ChatBotMessageDTO chatBotMessageDTO){
+        try{
+            ChatBotRoom chatBotRoom = chatBotRoomRepository.findById(chatBotMessageDTO.getChatBotRoomId())
+                    .orElseThrow(()-> new ChatBotRoomHandler(ErrorStatus.CHATBOT_ROOM_NOT_FOUND));
+
+            ChatBotMessage chatMessage = toChatBotMessage(chatBotMessageDTO,chatBotRoom);
+            chatBotMessageRepository.save(chatMessage);
+            template.convertAndSend("/topic/" + chatBotMessageDTO.getChatBotRoomId(), chatBotMessageDTO);
+        }catch(NoSuchElementException e){
+            template.convertAndSend("/topic/" + chatBotMessageDTO.getChatBotRoomId(), ErrorStatus._BAD_REQUEST);
+        }
     }
 }

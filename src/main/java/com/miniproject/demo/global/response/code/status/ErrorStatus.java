@@ -17,7 +17,8 @@ public enum ErrorStatus implements BaseErrorCode {
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
 
     // 채팅 에러
-    CHATBOT_ROOM_CREATE_FAIL (HttpStatus.BAD_REQUEST, "COMMON400", "채팅방 생성에 실패했습니다."),
+    CHATBOT_ROOM_CREATE_FAIL (HttpStatus.BAD_REQUEST, "CHATBOT400", "채팅방 생성에 실패했습니다."),
+    CHATBOT_ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "CHATBOT400", "채팅방을 찾을 수 없습니다."),
 
     ;
 
