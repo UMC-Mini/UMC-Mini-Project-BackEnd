@@ -10,6 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
+                .allowedOrigins("http://localhost:8080")
                 .allowedOrigins("http://localhost:3000") // 리액트 앱의 주소
                 .allowedOrigins("http://localhost:3004")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")

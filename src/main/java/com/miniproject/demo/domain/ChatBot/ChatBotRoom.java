@@ -25,6 +25,19 @@ public class ChatBotRoom extends BaseEntity {
     @OneToMany(mappedBy = "chatBotRoom")
     private List<ChatBotMessage> chatBotMessages = new ArrayList<>();
 
+    public void setUser(ChatBotUser user) {
+        this.chatBotUser = user;
+    }
 
+    public Long getId() {
+        return id;
+    }
+
+    public ChatBotUser getChatBotUser(){
+        return chatBotUser;
+    }
+    public ChatBotRoom(ChatBotUser user) {
+        this.chatBotUser = user;
+    }
 
 }

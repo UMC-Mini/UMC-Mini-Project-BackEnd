@@ -5,12 +5,14 @@ import java.time.LocalDateTime;
 
 public class ChatBotResponseDTO {
 
-//    @Getter
-//    @AllArgsConstructor
-//    @NoArgsConstructor
-//    @Builder
-//    public static class CreateChatBotUserResultDTO {
-//        private Long Id;
-//        private LocalDateTime createAt;
-//    }
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class CreateChatBotResultDTO {
+        private Long roomId;
+        private Long userId;
+        private LocalDateTime createAt;
+    }
+
 }

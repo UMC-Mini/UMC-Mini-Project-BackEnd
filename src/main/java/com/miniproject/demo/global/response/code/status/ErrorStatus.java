@@ -16,6 +16,9 @@ public enum ErrorStatus implements BaseErrorCode {
     _UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "COMMON401", "인증이 필요합니다."),
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
 
+    // 채팅 에러
+    CHATBOT_ROOM_CREATE_FAIL (HttpStatus.BAD_REQUEST, "COMMON400", "채팅방 생성에 실패했습니다."),
+
     ;
 
     private final HttpStatus httpStatus;

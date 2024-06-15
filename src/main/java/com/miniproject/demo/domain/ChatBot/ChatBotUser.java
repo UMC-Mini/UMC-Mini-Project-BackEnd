@@ -26,4 +26,7 @@ public class ChatBotUser extends BaseEntity {
     @OneToMany(mappedBy = "chatBotUser")
     private List<ChatBotRoom> chatBotRooms = new ArrayList<>();
 
+    public Long getId() {
+        return id;
+    }
 }
