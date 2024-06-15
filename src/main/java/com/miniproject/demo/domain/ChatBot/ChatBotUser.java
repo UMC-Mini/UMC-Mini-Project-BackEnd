@@ -6,6 +6,9 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,7 +23,7 @@ public class ChatBotUser extends BaseEntity {
 
     private String phoneNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chatbot_room_id")
-    private ChatBotRoom chatBotRoom;
+    @OneToMany(mappedBy = "chatBotUser")
+    private List<ChatBotRoom> chatBotRooms = new ArrayList<>();
+
 }

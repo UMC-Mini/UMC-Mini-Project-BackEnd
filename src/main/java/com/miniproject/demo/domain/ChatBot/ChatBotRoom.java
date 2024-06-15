@@ -18,8 +18,13 @@ public class ChatBotRoom extends BaseEntity {
     @Column(name = "chatbot_room_id")
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "chatbot_user_id")
+    private ChatBotUser chatBotUser;
+
     @OneToMany(mappedBy = "chatBotRoom")
-    private List<ChatBotUser> chatBotUsers = new ArrayList<>();
+    private List<ChatBotMessage> chatBotMessages = new ArrayList<>();
+
 
 
 }

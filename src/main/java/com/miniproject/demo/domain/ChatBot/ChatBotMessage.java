@@ -21,9 +21,8 @@ public class ChatBotMessage extends BaseEntity {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @ManyToOne
-    @JoinColumn(name = "chatbot_user_id")
-    private ChatBotUser chatBotUser;
+    private String sender;
+
 
     @ManyToOne
     @JoinColumn(name = "chatbot_room_id")
