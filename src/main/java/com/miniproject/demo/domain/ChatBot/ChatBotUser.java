@@ -29,4 +29,10 @@ public class ChatBotUser extends BaseEntity {
     public Long getId() {
         return id;
     }
+
+    public ChatBotRoom getChatBotRoom() {
+        return chatBotRooms.isEmpty() ? null : chatBotRooms.get(0);
+    }
+
+
 }

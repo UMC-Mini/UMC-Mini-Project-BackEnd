@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static com.miniproject.demo.dto.ChatBot.Converter.ChatBotConverter.*;
 
@@ -38,13 +39,20 @@ public class ChatBotServiceImpl implements  ChatBotService {
     @Override
     //To do : 이미 있는 사용자인지 검사
     public ChatBotResponseDTO.CreateChatBotResultDTO createChatBot(ChatBotRequestDTO.CreateChatBotDTO createChatBotDTO){
-        ChatBotUser chatBotUser = toUser(createChatBotDTO);
-        chatBotUserRepository.save(chatBotUser);
+        Optional<ChatBotUser> isUser = chatBotUserRepository.findByNameAndPhoneNumber(createChatBotDTO.getName(), createChatBotDTO.getPhoneNumber());
+        if(isUser.isPresent()){
+            return toCreateChatBotResultDTO(isUser.get().getChatBotRoom());
+        }
+        else{
+            ChatBotUser chatBotUser = toUser(createChatBotDTO);
+            chatBotUserRepository.save(chatBotUser);
 
-        ChatBotRoom chatBotRoom = new ChatBotRoom(chatBotUser);
-        chatBotRoomRepository.save(chatBotRoom);
+            ChatBotRoom chatBotRoom = new ChatBotRoom(chatBotUser);
+            chatBotRoomRepository.save(chatBotRoom);
 
-        return toCreateChatBotResultDTO(chatBotRoom);
+            return toCreateChatBotResultDTO(chatBotRoom);
+        }
+
     }
 
     @Override
