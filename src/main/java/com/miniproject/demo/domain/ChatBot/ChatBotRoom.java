@@ -22,7 +22,7 @@ public class ChatBotRoom extends BaseEntity {
     @JoinColumn(name = "chatbot_user_id")
     private ChatBotUser chatBotUser;
 
-    @OneToMany(mappedBy = "chatBotRoom")
+    @OneToMany(mappedBy = "chatBotRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatBotMessage> chatBotMessages = new ArrayList<>();
 
     public void setUser(ChatBotUser user) {

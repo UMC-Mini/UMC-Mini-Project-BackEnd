@@ -32,7 +32,7 @@ public class ChatBotController {
     })
     public BaseResponse<ChatBotResponseDTO.CreateChatBotResultDTO> createChatBot(@RequestBody ChatBotRequestDTO.CreateChatBotDTO createChatBotDTO){
         try{
-            return BaseResponse.of(SuccessStatus.CHATBOTROOM_CREATE_SUCCESS,chatBotService.createChatBot(createChatBotDTO));
+            return BaseResponse.of(SuccessStatus.CHATBOT_ROOM_CREATE_SUCCESS,chatBotService.createChatBot(createChatBotDTO));
         }catch(NoSuchElementException e){
             return BaseResponse.onFailure(ErrorStatus.CHATBOT_ROOM_CREATE_FAIL.getMessage(), ErrorStatus.CHATBOT_ROOM_CREATE_FAIL.getCode(), null);
         }
@@ -57,10 +57,27 @@ public class ChatBotController {
                                                                                   @RequestParam(name = "cursor") Long cursor,
                                                                                   @RequestParam(name = "pageSize") Integer pageSize){
         try{
-            return BaseResponse.of(SuccessStatus.CHATMESSAGE_FETCH_SUCCESS,chatBotService.getChatBotMessages(roomId,cursor,pageSize));
+            return BaseResponse.of(SuccessStatus.CHAT_MESSAGE_FETCH_SUCCESS,chatBotService.getChatBotMessages(roomId,cursor,pageSize));
         }catch(NoSuchElementException e){
             return BaseResponse.onFailure(ErrorStatus.CHATBOT_MESSAGE_NOT_FOUND.getMessage(), ErrorStatus.CHATBOT_MESSAGE_NOT_FOUND.getCode(), null);
         }
     }
+
+    @DeleteMapping("/room/{roomId}")
+    @Operation(summary = "상담 종료", description = "상담종료하기를 누르면 사용자, 상담 채팅방, 채팅 내용이 모두 삭제됩니다." )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "OK", description = "상담채팅방 삭제 성공"),
+            @ApiResponse(responseCode = "NOT_FOUND", description = "정보를 찾을 수 없습니다.")
+    })
+    public BaseResponse<Void>deleteChat(@PathVariable Long roomId){
+        try{
+            chatBotService.deleteChat(roomId);
+            return BaseResponse.of(SuccessStatus.CHATBOT_DELETE_SUCCESS,null);
+        }catch(NoSuchElementException e){
+            return BaseResponse.onFailure(ErrorStatus.CHATBOT_ROOM_NOT_FOUND.getMessage(), ErrorStatus.CHATBOT_ROOM_NOT_FOUND.getCode(), null);
+        }
+
+    }
+
 
 }

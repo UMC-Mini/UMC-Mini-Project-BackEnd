@@ -8,4 +8,6 @@ public interface ChatBotService {
     ChatBotResponseDTO.CreateChatBotResultDTO createChatBot(ChatBotRequestDTO.CreateChatBotDTO createChatBotDTO);
     void sendMessage(ChatBotRequestDTO.ChatBotMessageDTO chatBotMessageDTO);
     ChatBotResponseDTO.ChatBotMessageListDTO getChatBotMessages (Long roomId, Long cursor, int pageSize);
+
+    void deleteChat (Long roomId);
 }

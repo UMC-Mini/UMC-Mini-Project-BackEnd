@@ -23,7 +23,7 @@ public class ChatBotUser extends BaseEntity {
 
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "chatBotUser")
+    @OneToMany(mappedBy = "chatBotUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatBotRoom> chatBotRooms = new ArrayList<>();
 
     public Long getId() {

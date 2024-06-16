@@ -36,6 +36,7 @@ public class ChatBotServiceImpl implements  ChatBotService {
     SimpMessagingTemplate template;
 
     @Override
+    //To do : 이미 있는 사용자인지 검사
     public ChatBotResponseDTO.CreateChatBotResultDTO createChatBot(ChatBotRequestDTO.CreateChatBotDTO createChatBotDTO){
         ChatBotUser chatBotUser = toUser(createChatBotDTO);
         chatBotUserRepository.save(chatBotUser);
@@ -60,6 +61,7 @@ public class ChatBotServiceImpl implements  ChatBotService {
         }
     }
 
+    @Override
     public ChatBotResponseDTO.ChatBotMessageListDTO getChatBotMessages (Long roomId, Long cursor, int pageSize){
         ChatBotRoom chatBotRoom = chatBotRoomRepository.findById(roomId)
                 .orElseThrow(()-> new ChatBotRoomHandler(ErrorStatus.CHATBOT_ROOM_NOT_FOUND));
@@ -70,5 +72,13 @@ public class ChatBotServiceImpl implements  ChatBotService {
 
         return toChatBotMessageList(messages,nextCursor,isLast);
 
+    }
+
+    @Override
+    public void deleteChat (Long roomId){
+        ChatBotRoom chatBotRoom = chatBotRoomRepository.findById(roomId)
+                .orElseThrow(()-> new ChatBotRoomHandler(ErrorStatus.CHATBOT_ROOM_NOT_FOUND));
+        ChatBotUser chatBotUser = chatBotRoom.getChatBotUser();
+        chatBotUserRepository.delete(chatBotUser);
     }
 }
