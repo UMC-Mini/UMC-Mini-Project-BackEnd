@@ -7,14 +7,14 @@ import com.miniproject.demo.global.response.code.BaseCode;
 import com.miniproject.demo.global.response.code.status.ErrorStatus;
 import com.miniproject.demo.global.response.code.status.SuccessStatus;
 import com.miniproject.demo.service.ChatBot.ChatBotService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.NoSuchElementException;
 
@@ -25,6 +25,11 @@ public class ChatBotController {
     private final ChatBotService chatBotService;
 
     @PostMapping("")
+    @Operation(summary = "상담 채팅 시작하기", description = "이름과 전화번호를 입력하면 사용자와 상담 채팅방이 생성됩니다." )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "CREATED", description = "상담채팅방 생성 성공"),
+            @ApiResponse(responseCode = "NOT_FOUND", description = "채팅방을 찾을 수 없습니다.")
+    })
     public BaseResponse<ChatBotResponseDTO.CreateChatBotResultDTO> createChatBot(@RequestBody ChatBotRequestDTO.CreateChatBotDTO createChatBotDTO){
         try{
             return BaseResponse.of(SuccessStatus.CHATBOTROOM_CREATE_SUCCESS,chatBotService.createChatBot(createChatBotDTO));
@@ -40,5 +45,22 @@ public class ChatBotController {
 
     }
 
+
+
+    @GetMapping("/room/{roomId}/messages")
+    @Operation(summary = "채팅 내역 불러오기", description = "채팅메시지 불러오기 성공" )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "OK", description = "상담채팅방 생성 성공"),
+            @ApiResponse(responseCode = "NOT_FOUND", description = "채팅 메시지를 찾을 수 없습니다.")
+    })
+    public BaseResponse<ChatBotResponseDTO.ChatBotMessageListDTO> getChatMessages(@PathVariable Long roomId,
+                                                                                  @RequestParam(name = "cursor") Long cursor,
+                                                                                  @RequestParam(name = "pageSize") Integer pageSize){
+        try{
+            return BaseResponse.of(SuccessStatus.CHATMESSAGE_FETCH_SUCCESS,chatBotService.getChatBotMessages(roomId,cursor,pageSize));
+        }catch(NoSuchElementException e){
+            return BaseResponse.onFailure(ErrorStatus.CHATBOT_MESSAGE_NOT_FOUND.getMessage(), ErrorStatus.CHATBOT_MESSAGE_NOT_FOUND.getCode(), null);
+        }
+    }
 
 }

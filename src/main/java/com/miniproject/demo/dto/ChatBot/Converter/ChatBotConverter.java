@@ -6,6 +6,10 @@ import com.miniproject.demo.domain.ChatBot.ChatBotRoom;
 import com.miniproject.demo.domain.ChatBot.ChatBotUser;
 import com.miniproject.demo.dto.ChatBot.ChatBotRequestDTO;
 import com.miniproject.demo.dto.ChatBot.ChatBotResponseDTO;
+import com.miniproject.demo.dto.ChatMessageDTO;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ChatBotConverter {
 
@@ -32,4 +36,24 @@ public class ChatBotConverter {
                 .chatBotRoom(chatBotRoom)
                 .build();
     }
+
+    public static ChatBotResponseDTO.ChatBotMessageListDTO toChatBotMessageList(List<ChatBotMessage> messages, Long nextCursor, boolean isLast) {
+        List<ChatBotRequestDTO.ChatBotMessageDTO> chatBotMessages = messages.stream()
+                .map(message -> ChatBotRequestDTO.ChatBotMessageDTO.builder()
+                        .content(message.getContent())
+                        .imageUrl(message.getImageUrl())
+                        .sender(message.getSender())
+                        .chatBotRoomId(message.getChatBotRoom().getId())
+                        .build())
+                .collect(Collectors.toList());
+
+        return ChatBotResponseDTO.ChatBotMessageListDTO.builder()
+                .messages(chatBotMessages)
+                .nextCursor(nextCursor)
+                .isLast(isLast)
+                .build();
+    }
+
+
+
 }

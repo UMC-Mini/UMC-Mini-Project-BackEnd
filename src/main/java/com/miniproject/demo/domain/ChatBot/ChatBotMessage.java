@@ -27,4 +27,16 @@ public class ChatBotMessage extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "chatbot_room_id")
     private ChatBotRoom chatBotRoom;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getContent(){return content;}
+
+    public String getImageUrl(){return imageUrl;}
+
+    public String getSender(){return sender;}
+
+    public ChatBotRoom getChatBotRoom(){return chatBotRoom;}
 }

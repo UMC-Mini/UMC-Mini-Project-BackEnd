@@ -13,6 +13,8 @@ public enum SuccessStatus implements BaseCode {
     _OK(HttpStatus.OK, "COMMON200", "성공입니다."),
     _CREATED(HttpStatus.CREATED, "COMMON201", "요청 성공 및 리소스 생성됨"),
     CHATBOTROOM_CREATE_SUCCESS(HttpStatus.CREATED,"CHATBOT201","상담채팅방 생성 성공"),
+    CHATMESSAGE_FETCH_SUCCESS(HttpStatus.OK,"CHATBOT200","채팅메시지 불러오기 성공"),
+
 
     ;
 

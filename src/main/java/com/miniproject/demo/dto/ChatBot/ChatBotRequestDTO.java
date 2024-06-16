@@ -1,7 +1,10 @@
 package com.miniproject.demo.dto.ChatBot;
 
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 public class ChatBotRequestDTO {
 
@@ -14,10 +17,13 @@ public class ChatBotRequestDTO {
     }
 
     @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
     public static class ChatBotMessageDTO{
         private String content;
         private String imageUrl;
         private String sender;
-        private String chatBotRoomId;
+        private Long chatBotRoomId;
     }
 }

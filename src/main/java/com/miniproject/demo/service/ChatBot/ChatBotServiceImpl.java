@@ -12,10 +12,13 @@ import com.miniproject.demo.repository.ChatBot.ChatBotRoomRepository;
 import com.miniproject.demo.repository.ChatBot.ChatBotUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.data.domain.Pageable;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static com.miniproject.demo.dto.ChatBot.Converter.ChatBotConverter.*;
@@ -55,5 +58,17 @@ public class ChatBotServiceImpl implements  ChatBotService {
         }catch(NoSuchElementException e){
             template.convertAndSend("/topic/" + chatBotMessageDTO.getChatBotRoomId(), ErrorStatus._BAD_REQUEST);
         }
+    }
+
+    public ChatBotResponseDTO.ChatBotMessageListDTO getChatBotMessages (Long roomId, Long cursor, int pageSize){
+        ChatBotRoom chatBotRoom = chatBotRoomRepository.findById(roomId)
+                .orElseThrow(()-> new ChatBotRoomHandler(ErrorStatus.CHATBOT_ROOM_NOT_FOUND));
+        Pageable pageable = PageRequest.of(0,pageSize);
+        List<ChatBotMessage> messages = chatBotMessageRepository.findByChatBotRoomAndIdGreaterThan(chatBotRoom,cursor,pageable);
+        Long nextCursor = messages.isEmpty()?null:messages.get(messages.size()-1).getId();
+        boolean isLast = messages.size()<pageSize;
+
+        return toChatBotMessageList(messages,nextCursor,isLast);
+
     }
 }

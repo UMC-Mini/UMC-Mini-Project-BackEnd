@@ -19,6 +19,7 @@ public enum ErrorStatus implements BaseErrorCode {
     // 채팅 에러
     CHATBOT_ROOM_CREATE_FAIL (HttpStatus.BAD_REQUEST, "CHATBOT400", "채팅방 생성에 실패했습니다."),
     CHATBOT_ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "CHATBOT400", "채팅방을 찾을 수 없습니다."),
+    CHATBOT_MESSAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "CHATBOT400", "채팅 메시지를 찾을 수 없습니다."),
 
     ;
 
