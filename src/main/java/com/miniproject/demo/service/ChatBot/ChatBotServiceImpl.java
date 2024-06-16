@@ -56,6 +56,7 @@ public class ChatBotServiceImpl implements  ChatBotService {
     }
 
     @Override
+    // To do: 이미지 업로드 S3
     public void sendMessage (ChatBotRequestDTO.ChatBotMessageDTO chatBotMessageDTO){
         try{
             ChatBotRoom chatBotRoom = chatBotRoomRepository.findById(chatBotMessageDTO.getChatBotRoomId())
