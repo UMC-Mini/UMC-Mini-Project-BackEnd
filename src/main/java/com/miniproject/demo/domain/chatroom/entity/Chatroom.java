@@ -1,5 +1,7 @@
 package com.miniproject.demo.domain.chatroom.entity;
 
+import com.miniproject.demo.domain.account.entity.User;
+import com.miniproject.demo.domain.mapping.UserChatRoom;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,4 +29,7 @@ public class Chatroom {
     @OneToMany(mappedBy = "chatroom", cascade = CascadeType.ALL)
     private List<ChatMessage> chatMessages = new ArrayList<>();
 
+    //채팅방 유저 매핑테이블로 매핑
+    @OneToMany(mappedBy = "chatroom", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserChatRoom> userChatRooms = new ArrayList<>();
 }
