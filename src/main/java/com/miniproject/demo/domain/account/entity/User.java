@@ -13,8 +13,8 @@ import java.util.List;
 @Builder
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "user")
 public class User extends BaseEntity {
 
