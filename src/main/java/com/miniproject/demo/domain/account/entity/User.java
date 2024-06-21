@@ -32,8 +32,8 @@ public class User extends BaseEntity {
     @Column(name = "user_password")
     private String password; // 사용자 비밀번호
 
-    @OneToMany(mappedBy = "user")
-    private List<Post> posts = new ArrayList<>(); // 게시물과의 연관관계
+//    @OneToMany(mappedBy = "user")
+//    private List<Post> posts = new ArrayList<>(); // 게시물과의 연관관계
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserChatRoom> userChatRooms = new ArrayList<>(); // 채팅방과의 다대다 관계 매핑 구현

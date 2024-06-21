@@ -22,7 +22,9 @@ public class Chatroom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    private String name;
+
+    //@Column(nullable = false)
     private int userCount; //채팅방 인원수
 
     //채팅방 채팅 다대일 매핑

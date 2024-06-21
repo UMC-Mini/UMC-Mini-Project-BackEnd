@@ -1,7 +1,7 @@
 package com.miniproject.demo.domain.post.controller;
 
 import com.miniproject.demo.domain.post.converter.PostConverter;
-import com.miniproject.demo.domain.post.domain.Post;
+import com.miniproject.demo.domain.post.entity.Post;
 import com.miniproject.demo.domain.post.dto.PostRequestDTO;
 import com.miniproject.demo.domain.post.dto.PostResponseDTO;
 import com.miniproject.demo.domain.post.service.PostService;
