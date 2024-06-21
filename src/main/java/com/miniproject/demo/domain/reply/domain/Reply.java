@@ -1,6 +1,7 @@
-package com.miniproject.demo.domain.post.domain;
+package com.miniproject.demo.domain.reply.domain;
 
-import com.miniproject.demo.domain.post.dto.PostRequestDTO;
+import com.miniproject.demo.domain.post.domain.Post;
+import com.miniproject.demo.domain.reply.dto.ReplyRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,28 +16,27 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Post {
+public class Reply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "title", nullable = false)
-    private String title;
-
-    @Column(name = "content", nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, name = "content")
     private String content;
+
+    @Column(name = "is_secret")
+    private boolean isSecret;
 
     //TODO: 유저 추가
 
-    @Column(name = "views")
-    private Integer views;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "post_id")
+    private Post post;
 
-    @Column(name = "is_secret", nullable = false)
-    private boolean isSecret;
-
-    @Column(name = "is_notification", nullable = false)
-    private boolean isNotification;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent")
+    private Reply parent;
 
     @Column(name = "created_at")
     @CreatedDate
@@ -47,21 +47,21 @@ public class Post {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Post(String title, String content, boolean isSecret, boolean isNotification) {
-        this.title = title;
+    public Reply(String content, boolean isSecret) {
         this.content = content;
         this.isSecret = isSecret;
-        this.isNotification = isNotification;
-        this.views = 0;
     }
 
-    public void updatePost(PostRequestDTO.UpdatePostDTO dto) {
-        Optional.ofNullable(dto.getTitle()).ifPresent(value -> this.title = value);
+    public void updateReply(ReplyRequestDTO.UpdateReplyDTO dto) {
         Optional.ofNullable(dto.getContent()).ifPresent(value -> this.content = value);
         Optional.ofNullable(dto.getSecret()).ifPresent(value -> this.isSecret = value);
     }
 
-    public void increaseViews() {
-        this.views++;
+    public void setParent(Reply parent) {
+        this.parent = parent;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
     }
 }

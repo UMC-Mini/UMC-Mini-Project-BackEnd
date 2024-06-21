@@ -1,33 +1,34 @@
-package com.miniproject.demo.domain.post.dto;
+package com.miniproject.demo.domain.reply.dto;
 
+import com.miniproject.demo.domain.post.validation.annotation.ExistPost;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-public class PostRequestDTO {
+public class ReplyRequestDTO {
 
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class CreatePostDTO {
-
-        @NotBlank
-        private String title;
+    public static class CreateReplyDTO {
 
         @NotBlank
         private String content;
 
         private boolean secret;
 
-        private boolean notification;
+        @ExistPost
+        private Long postId;
+
+        private Long parentId;
     }
 
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class UpdatePostDTO {
-        private String title;
+    public static class UpdateReplyDTO {
         private String content;
         private Boolean secret;
     }

@@ -31,8 +31,8 @@ public class PostConverter {
                 .content(post.getContent())
                 .views(post.getViews())
                 .createdAt(post.getCreatedAt())
-                .isSecret(post.isSecret())
-                .isNotification(post.isNotification())
+                .secret(post.isSecret())
+                .notification(post.isNotification())
                 .build();
         // TODO: 유저 추가
     }

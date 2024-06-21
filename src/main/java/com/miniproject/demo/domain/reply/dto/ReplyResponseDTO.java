@@ -1,4 +1,4 @@
-package com.miniproject.demo.domain.post.dto;
+package com.miniproject.demo.domain.reply.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-public class PostResponseDTO {
+public class ReplyResponseDTO {
 
     @Getter
     @Builder
@@ -24,12 +24,11 @@ public class PostResponseDTO {
     @AllArgsConstructor
     public static class PreviewResultDTO {
         private Long id;
-        private String title;
         private String content;
-        private Integer views;
-        private LocalDateTime createdAt;
+        //TODO: 유저 추가
         private boolean secret;
-        private boolean notification;
-        //TODO: Reply, user 추가
+        private boolean reply;
+        private LocalDateTime createdAt;
     }
+
 }
