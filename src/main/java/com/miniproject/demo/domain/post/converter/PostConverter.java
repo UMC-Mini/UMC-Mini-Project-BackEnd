@@ -1,6 +1,6 @@
 package com.miniproject.demo.domain.post.converter;
 
-import com.miniproject.demo.domain.post.domain.Post;
+import com.miniproject.demo.domain.post.entity.Post;
 import com.miniproject.demo.domain.post.dto.PostRequestDTO;
 import com.miniproject.demo.domain.post.dto.PostResponseDTO;
 

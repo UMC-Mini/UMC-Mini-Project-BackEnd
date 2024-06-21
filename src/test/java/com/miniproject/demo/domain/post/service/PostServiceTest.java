@@ -1,6 +1,6 @@
 package com.miniproject.demo.domain.post.service;
 
-import com.miniproject.demo.domain.post.domain.Post;
+import com.miniproject.demo.domain.post.entity.Post;
 import com.miniproject.demo.domain.post.dto.PostRequestDTO;
 import com.miniproject.demo.domain.post.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class PostServiceTest {

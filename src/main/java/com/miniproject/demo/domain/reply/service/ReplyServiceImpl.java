@@ -1,6 +1,6 @@
 package com.miniproject.demo.domain.reply.service;
 
-import com.miniproject.demo.domain.post.domain.Post;
+import com.miniproject.demo.domain.post.entity.Post;
 import com.miniproject.demo.domain.post.repository.PostRepository;
 import com.miniproject.demo.domain.reply.converter.ReplyConverter;
 import com.miniproject.demo.domain.reply.domain.Reply;
