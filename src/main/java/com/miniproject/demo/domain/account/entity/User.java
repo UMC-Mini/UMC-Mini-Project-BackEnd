@@ -2,6 +2,7 @@ package com.miniproject.demo.domain.account.entity;
 
 import com.miniproject.demo.domain.chatbot.entity.ChatBotRoom;
 import com.miniproject.demo.domain.mapping.UserChatRoom;
+import com.miniproject.demo.domain.post.entity.Post;
 import com.miniproject.demo.global.response.code.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
