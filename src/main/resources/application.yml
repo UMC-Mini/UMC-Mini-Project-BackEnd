@@ -12,6 +12,9 @@ spring:
         use_sql_comments: true
         hbm2ddl:
           auto: create
+  jwt:
+    secret: "dkqorhvmekgkwlaksdltlrksdpanjfajrdmausdksehlrpTwlckask"
+    access-token-time : 3600000
 
 springdoc:
   swagger-ui:

@@ -32,7 +32,7 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .addServersItem(new Server().url("/"))
                 .info(info)
-                .addSecurityItem(securityRequirement)
+                .addSecurityItem(new SecurityRequirement().addList("access-token"))
                 .components(components);
     }
 }
