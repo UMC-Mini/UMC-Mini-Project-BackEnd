@@ -2,6 +2,7 @@ package com.miniproject.demo.domain.reply.service;
 
 import com.miniproject.demo.domain.reply.domain.Reply;
 import com.miniproject.demo.domain.reply.dto.ReplyRequestDTO;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface ReplyService {
      * @param dto 생성 요청 dto
      * @return 생성된 Reply
      */
-    Reply createReply(ReplyRequestDTO.CreateReplyDTO dto);
+    Reply createReply(Authentication authentication, ReplyRequestDTO.CreateReplyDTO dto);
 
     /**
      * 모든 댓글 반환

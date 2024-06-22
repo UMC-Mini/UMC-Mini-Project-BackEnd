@@ -2,6 +2,7 @@ package com.miniproject.demo.domain.post.service;
 
 import com.miniproject.demo.domain.post.entity.Post;
 import com.miniproject.demo.domain.post.dto.PostRequestDTO;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface PostService {
      * @param dto 생성 요청
      * @return 생성이 완료된 게시글
      */
-    Post createPost(PostRequestDTO.CreatePostDTO dto);
+    Post createPost(Authentication authentication, PostRequestDTO.CreatePostDTO dto);
 
     /**
      * 게시글 하나를 가져오는 메소드
@@ -42,6 +43,19 @@ public interface PostService {
      * @param id 삭제할 게시글의 id
      */
     void deletePost(Long id);
+
+    /**
+     * 총 페이지 개수 반환
+     * @param offset 페이지 오프셋
+     * @return 총 페이지 개수
+     */
+    int totalPage(int offset);
+
+    /**
+     * 게시글의 총 개수 세는 메소드
+     * @return DB의 게시글 총 개수
+     */
+    int countOfPost();
 
     /**
      * 게시글이 존재하는 지 확인

@@ -1,5 +1,7 @@
 package com.miniproject.demo.domain.reply.dto;
 
+import com.miniproject.demo.domain.account.dto.UserResponseDTO;
+import com.miniproject.demo.domain.account.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,7 +27,7 @@ public class ReplyResponseDTO {
     public static class PreviewResultDTO {
         private Long id;
         private String content;
-        //TODO: 유저 추가
+        private UserResponseDTO.UserPreviewDTO author;
         private boolean secret;
         private boolean reply;
         private LocalDateTime createdAt;

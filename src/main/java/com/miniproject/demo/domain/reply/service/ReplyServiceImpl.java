@@ -1,15 +1,20 @@
 package com.miniproject.demo.domain.reply.service;
 
+import com.miniproject.demo.domain.account.entity.User;
+import com.miniproject.demo.domain.account.repository.UserRepository;
 import com.miniproject.demo.domain.post.entity.Post;
 import com.miniproject.demo.domain.post.repository.PostRepository;
 import com.miniproject.demo.domain.reply.converter.ReplyConverter;
 import com.miniproject.demo.domain.reply.domain.Reply;
 import com.miniproject.demo.domain.reply.dto.ReplyRequestDTO;
 import com.miniproject.demo.domain.reply.repository.ReplyRepository;
+import com.miniproject.demo.global.config.PrincipalDetails;
 import com.miniproject.demo.global.error.handler.PostHandler;
 import com.miniproject.demo.global.error.handler.ReplyHandler;
+import com.miniproject.demo.global.error.handler.UserHandler;
 import com.miniproject.demo.global.response.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,10 +28,15 @@ public class ReplyServiceImpl implements ReplyService{
 
     private final PostRepository postRepository;
     private final ReplyRepository replyRepository ;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
-    public Reply createReply(ReplyRequestDTO.CreateReplyDTO dto) {
+    public Reply createReply(Authentication authentication, ReplyRequestDTO.CreateReplyDTO dto) {
+        if (authentication == null) {
+            throw new UserHandler(ErrorStatus._AUTHENTICATION_FAILED);
+        }
+
         Reply reply = ReplyConverter.toReply(dto);
 
         Reply parent = null;
@@ -40,7 +50,10 @@ public class ReplyServiceImpl implements ReplyService{
                 new PostHandler(ErrorStatus.POST_NOT_FOUND));
         reply.setPost(post);
 
-        //TODO: 유저 매핑
+        String email = ((PrincipalDetails) authentication.getPrincipal()).getUsername();
+        User user = userRepository.findByEmail(email).orElseThrow(() ->
+                new UserHandler(ErrorStatus._NOT_FOUND_USER));
+        reply.setUser(user);
 
         return replyRepository.save(reply);
     }

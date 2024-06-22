@@ -1,10 +1,13 @@
 package com.miniproject.demo.domain.reply.service;
 
+import com.miniproject.demo.domain.account.entity.User;
+import com.miniproject.demo.domain.account.repository.UserRepository;
 import com.miniproject.demo.domain.post.entity.Post;
 import com.miniproject.demo.domain.post.repository.PostRepository;
 import com.miniproject.demo.domain.reply.domain.Reply;
 import com.miniproject.demo.domain.reply.dto.ReplyRequestDTO;
 import com.miniproject.demo.domain.reply.repository.ReplyRepository;
+import com.miniproject.demo.global.config.PrincipalDetails;
 import com.miniproject.demo.global.error.handler.PostHandler;
 import com.miniproject.demo.global.error.handler.ReplyHandler;
 import com.miniproject.demo.global.response.code.status.ErrorStatus;
@@ -12,6 +15,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
@@ -29,12 +35,31 @@ class ReplyServiceTest {
     @Autowired
     PostRepository postRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder encoder;
+
+    User user;
+
     Post post;
 
     @BeforeEach
     void init() {
         replyRepository.deleteAll();
         postRepository.deleteAll();
+        userRepository.deleteAll();
+        user = userRepository.save(User.builder()
+                .email("test@email.com")
+                .password(encoder.encode("test"))
+                .name("string")
+                .role("USER")
+                .build());
+        PrincipalDetails principal = new PrincipalDetails(user);
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(principal, "", principal.getAuthorities())
+        );
         post = savePosts("title", "content", false, false);
     }
 
@@ -45,6 +70,7 @@ class ReplyServiceTest {
                 .isSecret(isSecret)
                 .isNotification(isNotification)
                 .build();
+        post.setUser(user);
         return postRepository.save(post);
     }
 
@@ -77,7 +103,7 @@ class ReplyServiceTest {
                 new ReplyRequestDTO.CreateReplyDTO(content, secret, post.getId(), null);
 
         //when
-        Reply reply = replyService.createReply(createReplyDTO1);
+        Reply reply = replyService.createReply(SecurityContextHolder.getContext().getAuthentication(), createReplyDTO1);
 
         //then
         assertThat(reply.getContent()).isEqualTo(content);

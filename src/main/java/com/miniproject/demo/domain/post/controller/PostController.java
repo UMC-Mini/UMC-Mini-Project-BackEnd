@@ -8,6 +8,7 @@ import com.miniproject.demo.domain.post.service.PostService;
 import com.miniproject.demo.global.response.BaseResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +22,8 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/posts")
-    public BaseResponse<PostResponseDTO.JoinResultDTO> createPost(@RequestBody @Valid PostRequestDTO.CreatePostDTO request) {
-        Post post = postService.createPost(request);
+    public BaseResponse<PostResponseDTO.JoinResultDTO> createPost(Authentication authentication, @RequestBody @Valid PostRequestDTO.CreatePostDTO request) {
+        Post post = postService.createPost(authentication, request);
         return BaseResponse.onSuccess(PostConverter.toJoinResultDTO(post));
     }
 
@@ -33,11 +34,13 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public BaseResponse<List<PostResponseDTO.PreviewResultDTO>> getPosts(@RequestParam(required = false, defaultValue = "1") int page,
+    public BaseResponse<PostResponseDTO.PreviewResultDTOList> getPosts(@RequestParam(required = false, defaultValue = "1") int page,
                                                                          @RequestParam(required = false, defaultValue = "10") Integer offset,
                                                                          @RequestParam(required = false) String search) {
         List<Post> posts = postService.getPosts(search, page, offset);
-        return BaseResponse.onSuccess(PostConverter.toPreviewResultDTOList(posts));
+        int count = postService.countOfPost();
+        int totalPage = postService.totalPage(offset);
+        return BaseResponse.onSuccess(PostConverter.toPreviewResultDTOList(posts, count, totalPage));
     }
 
     @PatchMapping("/posts/{postId}")

@@ -1,5 +1,6 @@
 package com.miniproject.demo.domain.reply.converter;
 
+import com.miniproject.demo.domain.account.converter.UserConverter;
 import com.miniproject.demo.domain.reply.domain.Reply;
 import com.miniproject.demo.domain.reply.dto.ReplyRequestDTO;
 import com.miniproject.demo.domain.reply.dto.ReplyResponseDTO;
@@ -28,6 +29,7 @@ public class ReplyConverter {
                 .content(reply.getContent())
                 .secret(reply.isSecret())
                 .reply(reply.getParent() != null)
+                .author(UserConverter.toUserPreviewDTO(reply.getUser()))
                 .createdAt(reply.getCreatedAt())
                 .build();
     }

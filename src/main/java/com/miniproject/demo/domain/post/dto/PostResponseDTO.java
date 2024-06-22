@@ -1,11 +1,13 @@
 package com.miniproject.demo.domain.post.dto;
 
+import com.miniproject.demo.domain.account.dto.UserResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class PostResponseDTO {
 
@@ -30,6 +32,16 @@ public class PostResponseDTO {
         private LocalDateTime createdAt;
         private boolean secret;
         private boolean notification;
-        //TODO: Reply, user 추가
+        private UserResponseDTO.UserPreviewDTO author;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PreviewResultDTOList {
+        private List<PreviewResultDTO> list;
+        private int totalPage;
+        private int count;
     }
 }
