@@ -1,6 +1,6 @@
 package com.miniproject.demo.domain.reply.repository;
 
-import com.miniproject.demo.domain.post.domain.Post;
+import com.miniproject.demo.domain.post.entity.Post;
 import com.miniproject.demo.domain.reply.domain.Reply;
 import org.springframework.data.jpa.repository.JpaRepository;
 

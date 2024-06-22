@@ -1,11 +1,9 @@
 package com.miniproject.demo.domain.reply.service;
 
-import com.miniproject.demo.domain.post.domain.Post;
+import com.miniproject.demo.domain.post.entity.Post;
 import com.miniproject.demo.domain.post.repository.PostRepository;
-import com.miniproject.demo.domain.reply.converter.ReplyConverter;
 import com.miniproject.demo.domain.reply.domain.Reply;
 import com.miniproject.demo.domain.reply.dto.ReplyRequestDTO;
-import com.miniproject.demo.domain.reply.dto.ReplyResponseDTO;
 import com.miniproject.demo.domain.reply.repository.ReplyRepository;
 import com.miniproject.demo.global.error.handler.PostHandler;
 import com.miniproject.demo.global.error.handler.ReplyHandler;
@@ -17,9 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class ReplyServiceTest {

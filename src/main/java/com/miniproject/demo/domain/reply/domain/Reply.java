@@ -1,6 +1,6 @@
 package com.miniproject.demo.domain.reply.domain;
 
-import com.miniproject.demo.domain.post.domain.Post;
+import com.miniproject.demo.domain.post.entity.Post;
 import com.miniproject.demo.domain.reply.dto.ReplyRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
