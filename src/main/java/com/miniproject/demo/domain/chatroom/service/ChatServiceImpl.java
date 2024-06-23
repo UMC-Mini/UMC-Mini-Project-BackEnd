@@ -89,6 +89,20 @@ public class ChatServiceImpl implements ChatService {
         return userChatRoom.getUser().getId();
     }
 
+    @Override
+    public Long joinSecretRoom(Long roomId, Long userId, String password) {
+        Chatroom chatroom = chatRoomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("존재하지 않는 채팅방" + roomId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("존재하지않는유저" + userId));
+        if (chatroom.getPassword().equals(password)) {
+            UserChatRoom userChatRoom = UserChatRoom.builder().chatroom(chatroom).user(user).build();
+            userChatRepository.save(userChatRoom);
+            return userChatRoom.getUser().getId();
+        }
+        else {
+            throw new RuntimeException("비밀번호가 일치하지 않습니다");
+        }
+    }
+
     //메세지 전체 조회
     @Override
     public List<ChatMessage> getAllMessage(Long roomId) {

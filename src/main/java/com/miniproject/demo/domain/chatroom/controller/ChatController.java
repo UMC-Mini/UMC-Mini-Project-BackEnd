@@ -3,10 +3,7 @@ package com.miniproject.demo.domain.chatroom.controller;
 import com.miniproject.demo.domain.chatroom.converter.ChatMessageConverter;
 import com.miniproject.demo.domain.chatroom.converter.ChatRoomConverter;
 
-import com.miniproject.demo.domain.chatroom.dto.ChatJoinRequestDTO;
-import com.miniproject.demo.domain.chatroom.dto.ChatMessageResponseDTO;
-import com.miniproject.demo.domain.chatroom.dto.ChatRoomRequestDTO;
-import com.miniproject.demo.domain.chatroom.dto.ChatRoomResponseDTO;
+import com.miniproject.demo.domain.chatroom.dto.*;
 import com.miniproject.demo.domain.chatroom.entity.ChatMessage;
 import com.miniproject.demo.domain.chatroom.entity.Chatroom;
 import com.miniproject.demo.domain.chatroom.service.ChatService;
@@ -90,6 +87,12 @@ public class ChatController {
     @PostMapping("chatroom/join")
     public Long joinRoom(@RequestBody ChatJoinRequestDTO chatJoinRequestDTO) {
         return chatService.joinRoom(chatJoinRequestDTO.getRoomId(), chatJoinRequestDTO.getUserId());
+    }
+
+    //비밀 채팅방 입장
+    @PostMapping("secretroom/join")
+    public Long joinSecretRoom(@RequestBody SecretChatJoinRequestDTO secretChatJoinRequestDTO) {
+        return chatService.joinSecretRoom(secretChatJoinRequestDTO.getRoomId(), secretChatJoinRequestDTO.getUserId(), secretChatJoinRequestDTO.getPassword());
     }
 
     //채팅방 채팅 메세지 기록 조회
