@@ -92,7 +92,7 @@ class ReplyServiceTest {
                 new PostHandler(ErrorStatus.POST_NOT_FOUND));
         reply.setPost(post);
 
-        reply.setUser(user);
+        reply.setUser(userRepository.findById(user.getId()).orElseThrow());
 
         return replyRepository.save(reply);
     }
@@ -183,7 +183,7 @@ class ReplyServiceTest {
         Reply savedReply1 = saveReply(content1, false, post.getId(), null);
 
         //when
-        replyService.deleteReply(savedReply1.getId());
+        replyService.deleteReply(SecurityContextHolder.getContext().getAuthentication(), savedReply1.getId());
 
         //then
         assertThat(replyRepository.existsById(savedReply1.getId())).isFalse();
@@ -200,7 +200,7 @@ class ReplyServiceTest {
                 new ReplyRequestDTO.UpdateReplyDTO(modifiedContent, !secret);
 
         //when
-        Reply reply = replyService.updateReply(savedReply1.getId(), dto);
+        Reply reply = replyService.updateReply(SecurityContextHolder.getContext().getAuthentication(), savedReply1.getId(), dto);
 
         //then
         assertThat(reply.getId()).isEqualTo(savedReply1.getId());

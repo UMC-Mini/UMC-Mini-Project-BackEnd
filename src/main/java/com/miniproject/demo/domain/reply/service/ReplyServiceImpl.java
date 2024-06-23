@@ -90,18 +90,25 @@ public class ReplyServiceImpl implements ReplyService{
 
     @Override
     @Transactional
-    public void deleteReply(Long id) {
-        if (replyRepository.existsById(id)) {
-            replyRepository.deleteById(id);
+    public void deleteReply(Authentication authentication, Long id) {
+        Reply reply = replyRepository.findById(id).orElseThrow(() ->
+                new ReplyHandler(ErrorStatus.REPLY_NOT_FOUND));
+
+        if (!((PrincipalDetails) authentication.getPrincipal()).getUserId().equals(reply.getUser().getId())) {
+            throw new ReplyHandler(ErrorStatus.REPLY_NOT_WRITER);
         }
+        replyRepository.deleteById(id);
     }
 
     @Override
     @Transactional
-    public Reply updateReply(Long id, ReplyRequestDTO.UpdateReplyDTO dto) {
+    public Reply updateReply(Authentication authentication, Long id, ReplyRequestDTO.UpdateReplyDTO dto) {
         Reply reply = replyRepository.findById(id).orElseThrow(() ->
                 new ReplyHandler(ErrorStatus.REPLY_NOT_FOUND));
 
+        if (!((PrincipalDetails) authentication.getPrincipal()).getUserId().equals(reply.getUser().getId())) {
+            throw new ReplyHandler(ErrorStatus.REPLY_NOT_WRITER);
+        }
         reply.updateReply(dto);
         return reply;
     }

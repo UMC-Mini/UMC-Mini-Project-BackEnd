@@ -22,6 +22,11 @@ public class PrincipalDetails implements UserDetails {
         return roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
+
+    public Long getUserId() {
+        return this.user.getId();
+    }
+
     @Override
     public String getPassword() {
         return user.getPassword();

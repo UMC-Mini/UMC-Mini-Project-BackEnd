@@ -44,15 +44,16 @@ public class PostController {
     }
 
     @PatchMapping("/posts/{postId}")
-    public BaseResponse<PostResponseDTO.PreviewResultDTO> updatePost(@PathVariable Long postId,
+    public BaseResponse<PostResponseDTO.PreviewResultDTO> updatePost(Authentication authentication,
+                                                                     @PathVariable Long postId,
                                                                      @RequestBody PostRequestDTO.UpdatePostDTO request) {
-        Post post = postService.updatePost(postId, request);
+        Post post = postService.updatePost(authentication, postId, request);
         return BaseResponse.onSuccess(PostConverter.toPreviewResultDTO(post));
     }
 
     @DeleteMapping("/posts/{postId}")
-    public BaseResponse<Long> deletePost(@PathVariable Long postId) {
-        postService.deletePost(postId);
+    public BaseResponse<Long> deletePost(Authentication authentication, @PathVariable Long postId) {
+        postService.deletePost(authentication, postId);
         return BaseResponse.onSuccess(postId);
     }
 }

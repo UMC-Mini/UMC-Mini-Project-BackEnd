@@ -156,7 +156,7 @@ class PostServiceTest {
         PostRequestDTO.UpdatePostDTO dto = new PostRequestDTO.UpdatePostDTO(null, modifiedContent, false);
 
         //when
-        Post post = postService.updatePost(postId, dto);
+        Post post = postService.updatePost(SecurityContextHolder.getContext().getAuthentication(), postId, dto);
 
         //then
         assertThat(post.getTitle()).isEqualTo(title);
@@ -177,7 +177,7 @@ class PostServiceTest {
         Long postId = savePosts(title, content, isNotification).getId();
 
         //when
-        postService.deletePost(postId);
+        postService.deletePost(SecurityContextHolder.getContext().getAuthentication(), postId);
 
         //then
         assertThat(postRepository.existsById(postId)).isFalse();
