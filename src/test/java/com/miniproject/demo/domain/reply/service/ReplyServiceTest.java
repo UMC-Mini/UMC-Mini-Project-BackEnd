@@ -6,6 +6,7 @@ import com.miniproject.demo.domain.post.entity.Post;
 import com.miniproject.demo.domain.post.repository.PostRepository;
 import com.miniproject.demo.domain.reply.domain.Reply;
 import com.miniproject.demo.domain.reply.dto.ReplyRequestDTO;
+import com.miniproject.demo.domain.reply.dto.ReplyResponseDTO;
 import com.miniproject.demo.domain.reply.repository.ReplyRepository;
 import com.miniproject.demo.global.config.PrincipalDetails;
 import com.miniproject.demo.global.error.handler.PostHandler;
@@ -91,6 +92,8 @@ class ReplyServiceTest {
                 new PostHandler(ErrorStatus.POST_NOT_FOUND));
         reply.setPost(post);
 
+        reply.setUser(user);
+
         return replyRepository.save(reply);
     }
 
@@ -147,15 +150,12 @@ class ReplyServiceTest {
         Reply savedReply5 = saveReply(content5, false, post.getId(), savedReply1.getId());
 
         //when
-        List<Reply> result = replyService.getRepliesWithPost(post.getId());
+        List<ReplyResponseDTO.PreviewResultDTO> result = replyService.getRepliesWithPost(post.getId());
 
         //then
-        assertThat(result).hasSize(5);
+        assertThat(result).hasSize(2);
         assertThat(result.get(0).getId()).isEqualTo(savedReply1.getId());
-        assertThat(result.get(1).getId()).isEqualTo(savedReply2.getId());
-        assertThat(result.get(2).getId()).isEqualTo(savedReply5.getId());
-        assertThat(result.get(3).getId()).isEqualTo(savedReply3.getId());
-        assertThat(result.get(4).getId()).isEqualTo(savedReply4.getId());
+        assertThat(result.get(1).getId()).isEqualTo(savedReply3.getId());
 
     }
 

@@ -51,11 +51,11 @@ class PostServiceTest {
         );
     }
 
-    Post savePosts(String title, String content, boolean isSecret, boolean isNotification) {
+    Post savePosts(String title, String content, boolean isNotification) {
         Post post = Post.builder()
                 .title(title)
                 .content(content)
-                .isSecret(isSecret)
+                .isSecret(false)
                 .isNotification(isNotification)
                 .build();
         post.setUser(user);
@@ -67,9 +67,10 @@ class PostServiceTest {
         //given
         final String title = "title";
         final String content = "content";
+        final String password = "password";
         final boolean isSecret = true;
         final boolean isNotification = false;
-        PostRequestDTO.CreatePostDTO dto = new PostRequestDTO.CreatePostDTO(title, content, isSecret, isNotification);
+        PostRequestDTO.CreatePostDTO dto = new PostRequestDTO.CreatePostDTO(title, content, password, isSecret, isNotification);
 
         //when
         Post post = postService.createPost(SecurityContextHolder.getContext().getAuthentication(), dto);
@@ -89,17 +90,16 @@ class PostServiceTest {
         //given
         final String title = "title";
         final String content = "content";
-        final boolean isSecret = true;
         final boolean isNotification = false;
-        Long postId = savePosts(title, content, isSecret, isNotification).getId();
+        Long postId = savePosts(title, content, isNotification).getId();
 
         //when
-        Post post = postService.getPost(postId);
+        Post post = postService.getPost(postId, new PostRequestDTO.Password(null));
 
         //then
         assertThat(post.getTitle()).isEqualTo(title);
         assertThat(post.getContent()).isEqualTo(content);
-        assertThat(post.isSecret()).isEqualTo(isSecret);
+        assertThat(post.isSecret()).isFalse();
         assertThat(post.isNotification()).isEqualTo(isNotification);
         assertThat(post.getViews()).isEqualTo(1);
         assertThat(post.getId()).isEqualTo(postId);
@@ -109,12 +109,12 @@ class PostServiceTest {
     @Test
     void getPosts() {
         //given
-        savePosts("title1", "content_re", false, true);
-        savePosts("title2", "content8", true, false);
-        savePosts("title3", "content9", false, true);
-        savePosts("title4", "content6", true, false);
-        savePosts("title_Re", "content7", false, false);
-        savePosts("title6", "content8", false, false);
+        savePosts("title1", "content_re", true);
+        savePosts("title2", "content8", false);
+        savePosts("title3", "content9", true);
+        savePosts("title4", "content6", false);
+        savePosts("title_Re", "content7", false);
+        savePosts("title6", "content8", false);
         int offset = 5;
 
         //when
@@ -151,7 +151,7 @@ class PostServiceTest {
         final String content = "content";
         final boolean isSecret = true;
         final boolean isNotification = false;
-        Long postId = savePosts(title, content, isSecret, isNotification).getId();
+        Long postId = savePosts(title, content, isNotification).getId();
         final String modifiedContent = "content1";
         PostRequestDTO.UpdatePostDTO dto = new PostRequestDTO.UpdatePostDTO(null, modifiedContent, false);
 
@@ -174,7 +174,7 @@ class PostServiceTest {
         final String content = "content";
         final boolean isSecret = true;
         final boolean isNotification = false;
-        Long postId = savePosts(title, content, isSecret, isNotification).getId();
+        Long postId = savePosts(title, content, isNotification).getId();
 
         //when
         postService.deletePost(postId);
@@ -192,7 +192,7 @@ class PostServiceTest {
         final int count = 10;
 
         for (int i = 0; i < count; i++) {
-            savePosts(title + (i + 1), content + (i + 1), i % 2 == 0, (i + 1) % 2 == 0);
+            savePosts(title + (i + 1), content + (i + 1),  (i + 1) % 2 == 0);
         }
 
         //when
@@ -215,7 +215,7 @@ class PostServiceTest {
         final int count = 10;
 
         for (int i = 0; i < count; i++) {
-            savePosts(title + (i + 1), content + (i + 1), i % 2 == 0, (i + 1) % 2 == 0);
+            savePosts(title + (i + 1), content + (i + 1),  (i + 1) % 2 == 0);
         }
 
         //when
@@ -233,7 +233,7 @@ class PostServiceTest {
         final String content = "content";
         final boolean isSecret = true;
         final boolean isNotification = false;
-        Long postId = savePosts(title, content, isSecret, isNotification).getId();
+        Long postId = savePosts(title, content, isNotification).getId();
 
         //when
         boolean isExist = postService.isExist(postId);

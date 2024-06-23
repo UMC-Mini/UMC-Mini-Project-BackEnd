@@ -62,8 +62,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void logout(HttpServletRequest request) {
         try {
-            /*String accessToken = jwtUtil.resolveAccessToken(request);*/
-            String accessToken = (String) request.getAttribute("token");
+            String accessToken = jwtUtil.resolveAccessToken(request);
 
             // 토큰 유효성 검사
             if (!jwtUtil.isTokenValid(accessToken)) {

@@ -31,6 +31,9 @@ public class Post {
     @Column(name = "views")
     private Integer views;
 
+    @Column(name = "password")
+    private String password;
+
     @Column(name = "is_secret", nullable = false)
     private boolean isSecret;
 
@@ -50,9 +53,10 @@ public class Post {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Post(String title, String content, boolean isSecret, boolean isNotification) {
+    public Post(String title, String content, String password, boolean isSecret, boolean isNotification) {
         this.title = title;
         this.content = content;
+        this.password = password;
         this.isSecret = isSecret;
         this.isNotification = isNotification;
         this.views = 0;

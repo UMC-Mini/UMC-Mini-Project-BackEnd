@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ReplyResponseDTO {
 
@@ -29,8 +30,13 @@ public class ReplyResponseDTO {
         private String content;
         private UserResponseDTO.UserPreviewDTO author;
         private boolean secret;
-        private boolean reply;
+        private Long parentId;
         private LocalDateTime createdAt;
+        private List<PreviewResultDTO> children;
+
+        public void setChildren(List<PreviewResultDTO> children) {
+            this.children = children;
+        }
     }
 
 }

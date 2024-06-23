@@ -42,8 +42,8 @@ public class ReplyController {
 
     @GetMapping("/posts/{postId}/replies")
     public BaseResponse<List<ReplyResponseDTO.PreviewResultDTO>> getRepliesWithPost(@PathVariable Long postId) {
-        List<Reply> replies = replyService.getRepliesWithPost(postId);
-        return BaseResponse.onSuccess(ReplyConverter.toPreviewResultDTOList(replies));
+        List<ReplyResponseDTO.PreviewResultDTO> replies = replyService.getRepliesWithPost(postId);
+        return BaseResponse.onSuccess(replies);
     }
 
     @DeleteMapping("/replies/{replyId}")

@@ -19,7 +19,7 @@ public interface PostService {
      * @param id 찾을 게시글의 id
      * @return 찾은 게시글 하나
      */
-    Post getPost(Long id);
+    Post getPost(Long id, PostRequestDTO.Password password);
 
     /**
      * 게시글 여러개 가져오는 메소드, Keyword로 검색 및 페이지네이션 포함

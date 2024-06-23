@@ -7,6 +7,7 @@ import com.miniproject.demo.domain.post.repository.PostRepository;
 import com.miniproject.demo.domain.reply.converter.ReplyConverter;
 import com.miniproject.demo.domain.reply.domain.Reply;
 import com.miniproject.demo.domain.reply.dto.ReplyRequestDTO;
+import com.miniproject.demo.domain.reply.dto.ReplyResponseDTO;
 import com.miniproject.demo.domain.reply.repository.ReplyRepository;
 import com.miniproject.demo.global.config.PrincipalDetails;
 import com.miniproject.demo.global.error.handler.PostHandler;
@@ -70,16 +71,18 @@ public class ReplyServiceImpl implements ReplyService{
     }
 
     @Override
-    public List<Reply> getRepliesWithPost(Long postId) {
+    public List<ReplyResponseDTO.PreviewResultDTO> getRepliesWithPost(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() ->
                 new PostHandler(ErrorStatus.POST_NOT_FOUND));
         List<Reply> parents = replyRepository.findRepliesByPostIsAndParentIsNullOrderByCreatedAtAsc(post);
 
-        List<Reply> result = new ArrayList<>();
-
-        for (Reply parent : parents) {
-            result.add(parent);
-            result.addAll(replyRepository.findRepliesByPostIsAndParentIsOrderByCreatedAtAsc(post, parent));
+        List<ReplyResponseDTO.PreviewResultDTO> result = new ArrayList<>();
+        for (Reply reply : parents) {
+            ReplyResponseDTO.PreviewResultDTO dto = ReplyConverter.toPreviewResultDTO(reply);
+            dto.setChildren(
+                    ReplyConverter.toPreviewResultDTOList(replyRepository.findRepliesByPostIsAndParentIsOrderByCreatedAtAsc(post, reply))
+            );
+            result.add(dto);
         }
 
         return result;

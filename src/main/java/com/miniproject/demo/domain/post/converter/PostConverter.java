@@ -14,6 +14,7 @@ public class PostConverter {
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .isSecret(dto.isSecret())
+                .password(dto.getPassword())
                 .isNotification(dto.isNotification())
                 .build();
     }

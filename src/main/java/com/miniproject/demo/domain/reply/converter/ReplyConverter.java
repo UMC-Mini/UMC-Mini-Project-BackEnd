@@ -28,7 +28,7 @@ public class ReplyConverter {
                 .id(reply.getId())
                 .content(reply.getContent())
                 .secret(reply.isSecret())
-                .reply(reply.getParent() != null)
+                .parentId(reply.getParent() == null ? null : reply.getParent().getId())
                 .author(UserConverter.toUserPreviewDTO(reply.getUser()))
                 .createdAt(reply.getCreatedAt())
                 .build();

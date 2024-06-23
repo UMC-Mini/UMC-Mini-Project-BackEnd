@@ -2,6 +2,7 @@ package com.miniproject.demo.domain.reply.service;
 
 import com.miniproject.demo.domain.reply.domain.Reply;
 import com.miniproject.demo.domain.reply.dto.ReplyRequestDTO;
+import com.miniproject.demo.domain.reply.dto.ReplyResponseDTO;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public interface ReplyService {
      * @param postId 찾을 댓글들의 게시글 id
      * @return 찾은 댓글들을 정렬하여 반환
      */
-    List<Reply> getRepliesWithPost(Long postId);
+    List<ReplyResponseDTO.PreviewResultDTO> getRepliesWithPost(Long postId);
 
     /**
      * 댓글 하나 찾기

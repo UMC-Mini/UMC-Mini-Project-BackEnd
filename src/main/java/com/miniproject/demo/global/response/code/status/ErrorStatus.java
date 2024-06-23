@@ -21,6 +21,9 @@ public enum ErrorStatus implements BaseErrorCode {
     _PASSWORD_NOT_EQUAL(HttpStatus.NOT_FOUND, "USER401", "password가 일치하지 않습니다."),
 
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST404", "게시글을 찾을 수 없습니다."),
+    POST_SECRET(HttpStatus.BAD_REQUEST, "POST401", "게시글의 비밀 설정이 잘못되었습니다."),
+    POST_INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "POST401", "게시글의 비밀번호가 없습니다."),
+    POST_INCORRECT_PASSWORD(HttpStatus.BAD_REQUEST, "POST401", "게시글의 비밀번호가 틀렸습니다."),
     REPLY_NOT_FOUND(HttpStatus.NOT_FOUND, "REPLY404", "댓글을 찾을 수 없습니다."),
 
     // auth 관련 에러

@@ -28,8 +28,9 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public BaseResponse<PostResponseDTO.PreviewResultDTO> getPost(@PathVariable Long postId) {
-        Post post = postService.getPost(postId);
+    public BaseResponse<PostResponseDTO.PreviewResultDTO> getPost(@PathVariable Long postId,
+                                                                  @RequestBody(required = false) PostRequestDTO.Password password) {
+        Post post = postService.getPost(postId, password);
         return BaseResponse.onSuccess(PostConverter.toPreviewResultDTO(post));
     }
 

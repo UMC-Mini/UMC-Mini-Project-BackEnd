@@ -1,6 +1,5 @@
 package com.miniproject.demo.domain.account.entity;
 
-import com.miniproject.demo.domain.chatbot.entity.ChatBotRoom;
 import com.miniproject.demo.domain.mapping.UserChatRoom;
 import com.miniproject.demo.domain.post.entity.Post;
 import com.miniproject.demo.global.response.code.BaseEntity;
@@ -38,14 +37,13 @@ public class User extends BaseEntity {
 
     private String role;
 
-    /*@OneToMany(mappedBy = "user")
-    private List<Post> posts = new ArrayList<>(); // 게시물과의 연관관계*/
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Post> posts = new ArrayList<>(); // 게시물과의 연관관계
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<UserChatRoom> userChatRooms = new ArrayList<>(); // 채팅방과의 다대다 관계 매핑 구현
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ChatBotRoom> chatBotRooms = new ArrayList<>();
 
     public void setRole(String role){
         this.role = role;
