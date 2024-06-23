@@ -14,4 +14,5 @@ public interface UserService {
     void logout(HttpServletRequest request);
     void deleteUser(Long userId);
     User updateUser(Authentication authentication, UserRequestDTO.UpdateUserDTO updateUserDTO, Long userId);
+    User getMyPage(Long userId);
 }
