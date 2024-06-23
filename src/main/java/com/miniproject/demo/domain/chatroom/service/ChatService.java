@@ -4,7 +4,6 @@ import com.miniproject.demo.domain.chatroom.entity.ChatMessage;
 import com.miniproject.demo.domain.chatroom.entity.Chatroom;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ChatService {
 
@@ -35,7 +34,7 @@ public interface ChatService {
 //    }
 
     //채팅방 생성
-    Chatroom createRoom(String roomName, Long userCount);
+    Chatroom createRoom(String roomName, Long userCount ,String password);
 
     //메세지 저장
     ChatMessage saveMessage(ChatMessage chatMessage);
@@ -51,4 +50,6 @@ public interface ChatService {
 
     //채팅방 내의 유저 닉네임 전체 조회
     List<String> getAllUser(Long roomId);
+
+    Long joinRoom(Long roomId, Long userId);
 }

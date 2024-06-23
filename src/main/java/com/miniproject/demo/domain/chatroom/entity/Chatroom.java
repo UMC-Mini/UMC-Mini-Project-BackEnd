@@ -27,6 +27,7 @@ public class Chatroom {
     //@Column(nullable = false)
     private Long userCount; //채팅방 인원수
 
+    private String password; //채팅방 비번 설정
 
     //채팅방 채팅 다대일 매핑
     @OneToMany(mappedBy = "chatroom", cascade = CascadeType.ALL)
