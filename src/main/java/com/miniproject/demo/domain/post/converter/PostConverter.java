@@ -1,5 +1,6 @@
 package com.miniproject.demo.domain.post.converter;
 
+import com.miniproject.demo.domain.account.converter.UserConverter;
 import com.miniproject.demo.domain.post.entity.Post;
 import com.miniproject.demo.domain.post.dto.PostRequestDTO;
 import com.miniproject.demo.domain.post.dto.PostResponseDTO;
@@ -13,6 +14,7 @@ public class PostConverter {
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .isSecret(dto.isSecret())
+                .password(dto.getPassword())
                 .isNotification(dto.isNotification())
                 .build();
     }
@@ -33,11 +35,16 @@ public class PostConverter {
                 .createdAt(post.getCreatedAt())
                 .secret(post.isSecret())
                 .notification(post.isNotification())
+                .author(UserConverter.toUserPreviewDTO(post.getUser()))
                 .build();
-        // TODO: 유저 추가
     }
 
-    public static List<PostResponseDTO.PreviewResultDTO> toPreviewResultDTOList(List<Post> postList) {
-        return postList.stream().map(PostConverter::toPreviewResultDTO).toList();
+    public static PostResponseDTO.PreviewResultDTOList toPreviewResultDTOList(List<Post> postList, int count, int totalPage) {
+        List<PostResponseDTO.PreviewResultDTO> list = postList.stream().map(PostConverter::toPreviewResultDTO).toList();
+        return PostResponseDTO.PreviewResultDTOList.builder()
+                .list(list)
+                .count(count)
+                .totalPage(totalPage)
+                .build();
     }
 }

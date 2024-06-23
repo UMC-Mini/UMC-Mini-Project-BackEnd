@@ -1,5 +1,6 @@
 package com.miniproject.demo.domain.reply.domain;
 
+import com.miniproject.demo.domain.account.entity.User;
 import com.miniproject.demo.domain.post.entity.Post;
 import com.miniproject.demo.domain.reply.dto.ReplyRequestDTO;
 import jakarta.persistence.*;
@@ -28,7 +29,9 @@ public class Reply {
     @Column(name = "is_secret")
     private boolean isSecret;
 
-    //TODO: 유저 추가
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "post_id")
@@ -55,6 +58,10 @@ public class Reply {
     public void updateReply(ReplyRequestDTO.UpdateReplyDTO dto) {
         Optional.ofNullable(dto.getContent()).ifPresent(value -> this.content = value);
         Optional.ofNullable(dto.getSecret()).ifPresent(value -> this.isSecret = value);
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setParent(Reply parent) {

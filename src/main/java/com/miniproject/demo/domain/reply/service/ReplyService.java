@@ -2,6 +2,8 @@ package com.miniproject.demo.domain.reply.service;
 
 import com.miniproject.demo.domain.reply.domain.Reply;
 import com.miniproject.demo.domain.reply.dto.ReplyRequestDTO;
+import com.miniproject.demo.domain.reply.dto.ReplyResponseDTO;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -12,7 +14,7 @@ public interface ReplyService {
      * @param dto 생성 요청 dto
      * @return 생성된 Reply
      */
-    Reply createReply(ReplyRequestDTO.CreateReplyDTO dto);
+    Reply createReply(Authentication authentication, ReplyRequestDTO.CreateReplyDTO dto);
 
     /**
      * 모든 댓글 반환
@@ -25,7 +27,7 @@ public interface ReplyService {
      * @param postId 찾을 댓글들의 게시글 id
      * @return 찾은 댓글들을 정렬하여 반환
      */
-    List<Reply> getRepliesWithPost(Long postId);
+    List<ReplyResponseDTO.PreviewResultDTO> getRepliesWithPost(Long postId);
 
     /**
      * 댓글 하나 찾기

@@ -1,11 +1,11 @@
 package com.miniproject.demo.domain.account.entity;
 
-import com.miniproject.demo.domain.chatbot.entity.ChatBotRoom;
 import com.miniproject.demo.domain.mapping.UserChatRoom;
 import com.miniproject.demo.domain.post.entity.Post;
 import com.miniproject.demo.global.response.code.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +32,26 @@ public class User extends BaseEntity {
     @Column(name = "user_password")
     private String password; // 사용자 비밀번호
 
-//    @OneToMany(mappedBy = "user")
-//    private List<Post> posts = new ArrayList<>(); // 게시물과의 연관관계
+    @Column(name = "user_nickname")
+    private String nickname;
+
+    private String role;
+
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Post> posts = new ArrayList<>(); // 게시물과의 연관관계
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<UserChatRoom> userChatRooms = new ArrayList<>(); // 채팅방과의 다대다 관계 매핑 구현
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ChatBotRoom> chatBotRooms = new ArrayList<>();
+    public void setRole(String role){
+        this.role = role;
+    }
+
+    public void update(String password, String nickname, PasswordEncoder passwordEncoder){
+        this.password = passwordEncoder.encode(password);
+        this.nickname = nickname;
+    }
 
 }

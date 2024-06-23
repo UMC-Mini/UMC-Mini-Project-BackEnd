@@ -1,11 +1,14 @@
 package com.miniproject.demo.domain.reply.dto;
 
+import com.miniproject.demo.domain.account.dto.UserResponseDTO;
+import com.miniproject.demo.domain.account.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ReplyResponseDTO {
 
@@ -25,10 +28,15 @@ public class ReplyResponseDTO {
     public static class PreviewResultDTO {
         private Long id;
         private String content;
-        //TODO: 유저 추가
+        private UserResponseDTO.UserPreviewDTO author;
         private boolean secret;
-        private boolean reply;
+        private Long parentId;
         private LocalDateTime createdAt;
+        private List<PreviewResultDTO> children;
+
+        public void setChildren(List<PreviewResultDTO> children) {
+            this.children = children;
+        }
     }
 
 }
