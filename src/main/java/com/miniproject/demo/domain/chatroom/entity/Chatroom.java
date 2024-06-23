@@ -27,6 +27,7 @@ public class Chatroom {
     //@Column(nullable = false)
     private Long userCount; //채팅방 인원수
 
+
     //채팅방 채팅 다대일 매핑
     @OneToMany(mappedBy = "chatroom", cascade = CascadeType.ALL)
     private List<ChatMessage> chatMessages = new ArrayList<>();

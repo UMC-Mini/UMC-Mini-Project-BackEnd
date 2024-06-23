@@ -78,6 +78,12 @@ public class ChatController {
         return chatService.getMessageById(roomId);
     }
 
+    //채팅방 내부 유저 전체 조회
+    @GetMapping("chatroom/users/{roomId}")
+    public List<String> getAllUser(@PathVariable Long roomId) {
+        return chatService.getAllUser(roomId);
+    }
+
 }
 
 

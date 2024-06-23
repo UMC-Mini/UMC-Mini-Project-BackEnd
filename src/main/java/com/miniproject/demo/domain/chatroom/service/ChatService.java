@@ -48,4 +48,7 @@ public interface ChatService {
 
     //채팅방 전체 조회
     List<Chatroom> getAllChatRoom();
+
+    //채팅방 내의 유저 닉네임 전체 조회
+    List<String> getAllUser(Long roomId);
 }

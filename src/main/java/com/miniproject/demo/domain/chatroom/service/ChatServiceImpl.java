@@ -4,6 +4,7 @@ import com.miniproject.demo.domain.chatroom.entity.ChatMessage;
 import com.miniproject.demo.domain.chatroom.entity.Chatroom;
 import com.miniproject.demo.domain.chatroom.repository.ChatMessageRepository;
 import com.miniproject.demo.domain.chatroom.repository.ChatRoomRepository;
+import com.miniproject.demo.domain.mapping.UserChatRoom;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,6 +58,10 @@ public class ChatServiceImpl implements ChatService{
         return chatRoomRepository.findAll();
     }
 
-
-
+    //채팅방 내부에 있는 유저 리스트 전체 조회(네임)
+    @Override
+    public List<String> getAllUser(Long roomId) {
+        Chatroom chatroom = chatRoomRepository.findById(roomId).orElseThrow();
+        return chatroom.getUserChatRooms().stream().map(room -> room.getUser().getName()).toList();
+    }
 }
