@@ -36,6 +36,7 @@ public class UserConverter {
 
     public static ProfileResponseDTO toProfileResponseDTO(User user) {
         return ProfileResponseDTO.builder()
+                .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
                 .nickname(user.getNickname())
