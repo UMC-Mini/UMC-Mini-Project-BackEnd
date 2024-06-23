@@ -1,5 +1,6 @@
 package com.miniproject.demo.domain.account.converter;
 
+import com.miniproject.demo.domain.account.dto.ProfileResponseDTO;
 import com.miniproject.demo.domain.account.dto.UserRequestDTO;
 import com.miniproject.demo.domain.account.dto.UserResponseDTO;
 import com.miniproject.demo.domain.account.entity.User;
@@ -30,6 +31,14 @@ public class UserConverter {
         return UserResponseDTO.JoinResultDTO.builder()
                 .id(user.getId())
                 .createAt(user.getCreatedAt())
+                .build();
+    }
+
+    public static ProfileResponseDTO toProfileResponseDTO(User user) {
+        return ProfileResponseDTO.builder()
+                .name(user.getName())
+                .email(user.getEmail())
+                .nickname(user.getNickname())
                 .build();
     }
 }

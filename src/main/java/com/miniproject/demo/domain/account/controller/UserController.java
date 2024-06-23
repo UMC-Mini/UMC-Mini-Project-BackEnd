@@ -1,20 +1,19 @@
 package com.miniproject.demo.domain.account.controller;
 
 import com.miniproject.demo.domain.account.converter.UserConverter;
-import com.miniproject.demo.domain.account.dto.LoginRequestDTO;
-import com.miniproject.demo.domain.account.dto.LoginResponseDTO;
-import com.miniproject.demo.domain.account.dto.UserRequestDTO;
-import com.miniproject.demo.domain.account.dto.UserResponseDTO;
+import com.miniproject.demo.domain.account.dto.*;
 import com.miniproject.demo.domain.account.entity.User;
 import com.miniproject.demo.domain.account.service.UserService;
 import com.miniproject.demo.domain.post.converter.PostConverter;
 import com.miniproject.demo.domain.post.dto.PostRequestDTO;
 import com.miniproject.demo.domain.post.entity.Post;
+import com.miniproject.demo.global.config.PrincipalDetails;
 import com.miniproject.demo.global.response.BaseResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -52,6 +51,12 @@ public class UserController {
     public BaseResponse<String> logout(HttpServletRequest request){
         userService.logout(request);
         return BaseResponse.onSuccess("로그아웃 성공");
+    }
+
+    @GetMapping("/profile")
+    public BaseResponse<ProfileResponseDTO> getMyPage(@AuthenticationPrincipal PrincipalDetails principalDetails){
+        User user = userService.getMyPage(principalDetails.getUserId());
+        return BaseResponse.onSuccess(UserConverter.toProfileResponseDTO(user));
     }
 
 }

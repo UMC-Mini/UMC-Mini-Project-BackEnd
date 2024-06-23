@@ -106,4 +106,9 @@ public class UserServiceImpl implements UserService {
 
         return user;
     }
+
+    @Override
+    public User getMyPage(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new UserHandler(ErrorStatus._NOT_FOUND_USER));
+    }
 }
