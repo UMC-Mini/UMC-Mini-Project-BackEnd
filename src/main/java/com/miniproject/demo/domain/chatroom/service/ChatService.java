@@ -51,7 +51,14 @@ public interface ChatService {
     //채팅방 내의 유저 닉네임 전체 조회
     List<String> getAllUser(Long roomId);
 
+    //채팅방 입장
     Long joinRoom(Long roomId, Long userId);
-    
+
+    //비밀 채팅방 입장
+    Long joinSecretRoom(Long roomId, Long userId, String password);
+
+    //채팅방 메세지 전체조회
     List<ChatMessage> getAllMessage(Long roomId);
+
+
 }
