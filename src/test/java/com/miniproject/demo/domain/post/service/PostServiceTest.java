@@ -94,7 +94,7 @@ class PostServiceTest {
         Long postId = savePosts(title, content, isNotification).getId();
 
         //when
-        Post post = postService.getPost(postId, new PostRequestDTO.Password(null));
+        Post post = postService.getPost(new PostRequestDTO.GetPost(postId, null));
 
         //then
         assertThat(post.getTitle()).isEqualTo(title);

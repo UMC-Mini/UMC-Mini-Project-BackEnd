@@ -51,18 +51,18 @@ public class PostServiceImpl implements PostService{
 
     @Override
     @Transactional
-    public Post getPost(Long id, PostRequestDTO.Password password) {
-        Post post = postRepository.findById(id).orElseThrow(() ->
+    public Post getPost(PostRequestDTO.GetPost request) {
+        Post post = postRepository.findById(request.getPostId()).orElseThrow(() ->
                 new PostHandler(ErrorStatus.POST_NOT_FOUND));
         if (post.isSecret()) {
-            if (password.getPassword() == null) {
+            if (request.getPassword() == null) {
                 throw new PostHandler(ErrorStatus.POST_INVALID_PASSWORD);
             }
-            else if (!password.getPassword().equals(post.getPassword())) {
+            else if (!request.getPassword().equals(post.getPassword())) {
                 throw new PostHandler(ErrorStatus.POST_INCORRECT_PASSWORD);
             }
         }
-        else if (password.getPassword() != null) {
+        else if (request.getPassword() != null) {
             throw new PostHandler(ErrorStatus.POST_SECRET);
         }
 
