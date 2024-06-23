@@ -20,7 +20,7 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/chatbot")
+//@RequestMapping("/api/v1/chatbot")
 public class ChatBotController {
     private final ChatBotService chatBotService;
 

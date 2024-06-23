@@ -31,7 +31,7 @@ public class ChatBotConverter {
     public static ChatBotMessage toChatBotMessage (ChatBotRequestDTO.ChatBotMessageDTO chatBotMessageDTO,ChatBotRoom chatBotRoom){
         return ChatBotMessage.builder()
                 .content(chatBotMessageDTO.getContent())
-                .imageUrl(chatBotMessageDTO.getImageUrl())
+//                .imageUrl(chatBotMessageDTO.getImageUrl())
                 .sender(chatBotMessageDTO.getSender())
                 .chatBotRoom(chatBotRoom)
                 .build();
@@ -41,7 +41,7 @@ public class ChatBotConverter {
         List<ChatBotRequestDTO.ChatBotMessageDTO> chatBotMessages = messages.stream()
                 .map(message -> ChatBotRequestDTO.ChatBotMessageDTO.builder()
                         .content(message.getContent())
-                        .imageUrl(message.getImageUrl())
+//                        .imageUrl(message.getImageUrl())
                         .sender(message.getSender())
                         .chatBotRoomId(message.getChatBotRoom().getId())
                         .build())

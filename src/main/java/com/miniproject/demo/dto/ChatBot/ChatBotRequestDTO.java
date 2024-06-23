@@ -22,7 +22,7 @@ public class ChatBotRequestDTO {
     @Builder
     public static class ChatBotMessageDTO{
         private String content;
-        private String imageUrl;
+//        private String imageUrl;
         private String sender;
         private Long chatBotRoomId;
     }

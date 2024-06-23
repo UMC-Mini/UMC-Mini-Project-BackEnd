@@ -29,6 +29,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests((requests) -> requests
                 .requestMatchers(allowUrl).permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/chatbot/").permitAll()
+                .requestMatchers(HttpMethod.GET,"api/v1/chatbot/").permitAll()
                 .anyRequest().authenticated());
         return http.build();
     }
