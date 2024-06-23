@@ -7,7 +7,9 @@ import com.miniproject.demo.domain.reply.dto.ReplyResponseDTO;
 import com.miniproject.demo.domain.reply.service.ReplyService;
 import com.miniproject.demo.global.response.BaseResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +23,8 @@ public class ReplyController {
     private final ReplyService replyService;
 
     @PostMapping("/replies")
-    public BaseResponse<ReplyResponseDTO.JoinResultDTO> createReply(@RequestBody @Valid ReplyRequestDTO.CreateReplyDTO dto) {
-        Reply reply = replyService.createReply(dto);
+    public BaseResponse<ReplyResponseDTO.JoinResultDTO> createReply(Authentication authentication, @RequestBody @Valid ReplyRequestDTO.CreateReplyDTO dto) {
+        Reply reply = replyService.createReply(authentication, dto);
         return BaseResponse.onSuccess(ReplyConverter.toJoinResultDTO(reply));
     }
 
@@ -40,8 +42,8 @@ public class ReplyController {
 
     @GetMapping("/posts/{postId}/replies")
     public BaseResponse<List<ReplyResponseDTO.PreviewResultDTO>> getRepliesWithPost(@PathVariable Long postId) {
-        List<Reply> replies = replyService.getRepliesWithPost(postId);
-        return BaseResponse.onSuccess(ReplyConverter.toPreviewResultDTOList(replies));
+        List<ReplyResponseDTO.PreviewResultDTO> replies = replyService.getRepliesWithPost(postId);
+        return BaseResponse.onSuccess(replies);
     }
 
     @DeleteMapping("/replies/{replyId}")

@@ -1,16 +1,21 @@
 package com.miniproject.demo.domain.post.service;
 
+import com.miniproject.demo.domain.account.entity.User;
+import com.miniproject.demo.domain.account.repository.UserRepository;
 import com.miniproject.demo.domain.post.converter.PostConverter;
 import com.miniproject.demo.domain.post.entity.Post;
 import com.miniproject.demo.domain.post.dto.PostRequestDTO;
 import com.miniproject.demo.domain.post.repository.PostRepository;
+import com.miniproject.demo.global.config.PrincipalDetails;
 import com.miniproject.demo.global.error.handler.PostHandler;
+import com.miniproject.demo.global.error.handler.UserHandler;
 import com.miniproject.demo.global.response.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,20 +27,45 @@ import java.util.List;
 public class PostServiceImpl implements PostService{
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
-    public Post createPost(PostRequestDTO.CreatePostDTO dto) {
+    public Post createPost(Authentication authentication, PostRequestDTO.CreatePostDTO dto) {
+        if ((dto.isSecret() && dto.getPassword() == null) || (!dto.isSecret() && dto.getPassword() != null)) {
+            throw new PostHandler(ErrorStatus.POST_SECRET);
+        }
+
+        if (authentication == null) {
+            throw new UserHandler(ErrorStatus._AUTHENTICATION_FAILED);
+        }
         Post post = PostConverter.toPost(dto);
-        //TODO: 유저 매핑 추가
+
+        String email = ((PrincipalDetails) authentication.getPrincipal()).getUsername();
+        User user = userRepository.findByEmail(email).orElseThrow(() ->
+                new UserHandler(ErrorStatus._NOT_FOUND_USER));
+        post.setUser(user);
+
         return postRepository.save(post);
     }
 
     @Override
     @Transactional
-    public Post getPost(Long id) {
+    public Post getPost(Long id, PostRequestDTO.Password password) {
         Post post = postRepository.findById(id).orElseThrow(() ->
                 new PostHandler(ErrorStatus.POST_NOT_FOUND));
+        if (post.isSecret()) {
+            if (password.getPassword() == null) {
+                throw new PostHandler(ErrorStatus.POST_INVALID_PASSWORD);
+            }
+            else if (!password.getPassword().equals(post.getPassword())) {
+                throw new PostHandler(ErrorStatus.POST_INCORRECT_PASSWORD);
+            }
+        }
+        else if (password.getPassword() != null) {
+            throw new PostHandler(ErrorStatus.POST_SECRET);
+        }
+
         post.increaseViews();
         return post;
     }
@@ -78,6 +108,16 @@ public class PostServiceImpl implements PostService{
             postRepository.deleteById(id);
 
         }
+    }
+
+    @Override
+    public int totalPage(int offset) {
+        return (postRepository.countBy() - 1) / offset + 1;
+    }
+
+    @Override
+    public int countOfPost() {
+        return postRepository.countBy();
     }
 
     @Override

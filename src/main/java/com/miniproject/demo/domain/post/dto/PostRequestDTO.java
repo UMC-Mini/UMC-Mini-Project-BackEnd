@@ -18,9 +18,18 @@ public class PostRequestDTO {
         @NotBlank
         private String content;
 
+        private String password;
+
         private boolean secret;
 
         private boolean notification;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Password {
+        private String password;
     }
 
     @Getter

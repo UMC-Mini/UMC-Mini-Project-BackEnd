@@ -27,9 +27,11 @@ public class Chatroom {
 
     //채팅방 채팅 다대일 매핑
     @OneToMany(mappedBy = "chatroom", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<ChatMessage> chatMessages = new ArrayList<>();
 
     //채팅방 유저 매핑테이블로 매핑
     @OneToMany(mappedBy = "chatroom", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<UserChatRoom> userChatRooms = new ArrayList<>();
 }

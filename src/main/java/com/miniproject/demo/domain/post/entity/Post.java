@@ -1,5 +1,6 @@
 package com.miniproject.demo.domain.post.entity;
 
+import com.miniproject.demo.domain.account.entity.User;
 import com.miniproject.demo.domain.post.dto.PostRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,16 +28,21 @@ public class Post {
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    //TODO: 유저 추가
-
     @Column(name = "views")
     private Integer views;
+
+    @Column(name = "password")
+    private String password;
 
     @Column(name = "is_secret", nullable = false)
     private boolean isSecret;
 
     @Column(name = "is_notification", nullable = false)
     private boolean isNotification;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "user_id")
+    private User user;
 
     @Column(name = "created_at")
     @CreatedDate
@@ -47,9 +53,10 @@ public class Post {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Post(String title, String content, boolean isSecret, boolean isNotification) {
+    public Post(String title, String content, String password, boolean isSecret, boolean isNotification) {
         this.title = title;
         this.content = content;
+        this.password = password;
         this.isSecret = isSecret;
         this.isNotification = isNotification;
         this.views = 0;
@@ -63,5 +70,9 @@ public class Post {
 
     public void increaseViews() {
         this.views++;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
