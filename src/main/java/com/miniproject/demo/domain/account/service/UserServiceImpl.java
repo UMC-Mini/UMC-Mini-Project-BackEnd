@@ -15,6 +15,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,9 +87,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(UserRequestDTO.UpdateUserDTO updateUserDTO, Long userId) {
+    public User updateUser(Authentication authentication, UserRequestDTO.UpdateUserDTO updateUserDTO, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(()-> new UserHandler(ErrorStatus._NOT_FOUND_USER));
-        user.update(updateUserDTO.getPassword(), updateUserDTO.getNickname(), passwordEncoder);
+
+        if (authentication == null) {
+            throw new UserHandler(ErrorStatus._AUTHENTICATION_FAILED);
+        }
+
+        if(updateUserDTO.getPassword() != "" && updateUserDTO.getNickname() != ""){
+            user.update(updateUserDTO.getPassword(), updateUserDTO.getNickname(), passwordEncoder);
+        }else if(updateUserDTO.getPassword() != ""){
+            user.updatePw(updateUserDTO.getPassword(), passwordEncoder);
+        }else if(updateUserDTO.getNickname() != ""){
+            user.updateNickName(updateUserDTO.getNickname());
+        }else{
+            throw new UserHandler(ErrorStatus._AUTHENTICATION_FAILED);
+        }
+
         return user;
     }
 }

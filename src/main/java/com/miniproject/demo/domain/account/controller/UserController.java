@@ -14,6 +14,7 @@ import com.miniproject.demo.global.response.BaseResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -42,8 +43,8 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
-    public BaseResponse<UserResponseDTO.UserPreviewDTO> updateUser(@RequestBody UserRequestDTO.UpdateUserDTO updateUserDTO, @PathVariable Long userId){
-        User user = userService.updateUser(updateUserDTO, userId);
+    public BaseResponse<UserResponseDTO.UserPreviewDTO> updateUser(Authentication authentication, @RequestBody UserRequestDTO.UpdateUserDTO updateUserDTO, @PathVariable Long userId){
+        User user = userService.updateUser(authentication, updateUserDTO, userId);
         return BaseResponse.onSuccess(UserConverter.toUserPreviewDTO(user));
     }
 
