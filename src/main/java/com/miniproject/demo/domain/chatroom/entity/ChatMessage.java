@@ -23,6 +23,8 @@ public class ChatMessage {
     @Column(nullable = false)
     private String sender;
 
+//    private String roomId;
+
     //채팅방이랑 채팅 메세지 1대다 매핑
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chatroom_id")
