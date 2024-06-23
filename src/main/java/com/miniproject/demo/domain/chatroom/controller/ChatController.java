@@ -1,6 +1,10 @@
 package com.miniproject.demo.domain.chatroom.controller;
 
-import com.miniproject.demo.domain.chatroom.dto.ChatRoomDTO;
+import com.miniproject.demo.domain.chatroom.converter.ChatRoomConverter;
+
+import com.miniproject.demo.domain.chatroom.dto.ChatJoinRequestDTO;
+import com.miniproject.demo.domain.chatroom.dto.ChatRoomRequestDTO;
+import com.miniproject.demo.domain.chatroom.dto.ChatRoomResponseDTO;
 import com.miniproject.demo.domain.chatroom.entity.ChatMessage;
 import com.miniproject.demo.domain.chatroom.entity.Chatroom;
 import com.miniproject.demo.domain.chatroom.repository.ChatMessageRepository;
@@ -62,14 +66,14 @@ public class ChatController {
 
     //채팅방 생성 컨트롤러
     @PostMapping("/chatrooms")
-    public Chatroom createRoom(@RequestBody ChatRoomDTO chatRoomDTO) {
-        return chatService.createRoom(chatRoomDTO.getRoomName(), chatRoomDTO.getUserCount());
+    public Chatroom createRoom(@RequestBody ChatRoomRequestDTO chatRoomRequestDTO) {
+        return chatService.createRoom(chatRoomRequestDTO.getRoomName(), chatRoomRequestDTO.getUserCount(), chatRoomRequestDTO.getPassword());
     }
 
     //채팅방 전체 조회
-    @GetMapping("chatrooms")
-    public List<Chatroom> getAllChatRoom() {
-        return chatService.getAllChatRoom();
+    @GetMapping("/chatrooms")
+    public List<ChatRoomResponseDTO> getAllChatRoom() {
+        return chatService.getAllChatRoom().stream().map(ChatRoomConverter::toChatRoomResponseDTO).toList();
     }
 
     //채팅 기록 전체 조회
@@ -83,6 +87,16 @@ public class ChatController {
     public List<String> getAllUser(@PathVariable Long roomId) {
         return chatService.getAllUser(roomId);
     }
+
+    //채팅방 입장
+    @PostMapping("chatroom/join")
+    public Long joinRoom(@RequestBody ChatJoinRequestDTO chatJoinRequestDTO) {
+        return chatService.joinRoom(chatJoinRequestDTO.getRoomId(), chatJoinRequestDTO.getUserId());
+    }
+
+    //채팅방 채팅 메세지 기록 조회
+
+
 
 }
 

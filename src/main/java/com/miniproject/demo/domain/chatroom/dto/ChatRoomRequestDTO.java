@@ -5,7 +5,8 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class ChatRoomDTO {
-    String roomName;
-    Long userCount;
+public class ChatRoomRequestDTO {
+        String roomName;
+        Long userCount;
+        String password;
 }
