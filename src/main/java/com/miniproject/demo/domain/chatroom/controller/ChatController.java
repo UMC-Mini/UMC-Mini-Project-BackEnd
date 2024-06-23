@@ -1,21 +1,20 @@
 package com.miniproject.demo.domain.chatroom.controller;
 
+import com.miniproject.demo.domain.chatroom.converter.ChatMessageConverter;
 import com.miniproject.demo.domain.chatroom.converter.ChatRoomConverter;
 
 import com.miniproject.demo.domain.chatroom.dto.ChatJoinRequestDTO;
+import com.miniproject.demo.domain.chatroom.dto.ChatMessageResponseDTO;
 import com.miniproject.demo.domain.chatroom.dto.ChatRoomRequestDTO;
 import com.miniproject.demo.domain.chatroom.dto.ChatRoomResponseDTO;
 import com.miniproject.demo.domain.chatroom.entity.ChatMessage;
 import com.miniproject.demo.domain.chatroom.entity.Chatroom;
-import com.miniproject.demo.domain.chatroom.repository.ChatMessageRepository;
-import com.miniproject.demo.domain.chatroom.repository.ChatRoomRepository;
 import com.miniproject.demo.domain.chatroom.service.ChatService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,8 +31,8 @@ public class ChatController {
     //메세지 보내기 컨트롤러
     @MessageMapping("/chat.message")
     @SendTo("/topic/public")
-    public Map<String, Object> sendMessage(Map<String, Object> message) {
-        String sender = message.get("sender").toString();
+    public Map<String, Object> sendMessage(Principal principal, Map<String, Object> message) {
+        Long sender = Long.parseLong(message.get("sender").toString());
         String content = message.get("content").toString();
         Integer chatroomIdInteger = (Integer) message.get("chatroom");
         long roomId = chatroomIdInteger.longValue();
@@ -41,17 +40,16 @@ public class ChatController {
         Chatroom room = chatService.getChatRoomById(roomId);
 
         ChatMessage message1 = ChatMessage.builder()
-                .sender(sender)
                 .content(content)
                 .chatroom(room)
                 .build();
         System.out.println(message1);
-        ChatMessage chat = chatService.saveMessage(message1);
+        ChatMessage chat = chatService.saveMessage(message1, sender);
 
         Map<String, Object> result = new HashMap<>();
 
         result.put("id", chat.getId());
-        result.put("sender", chat.getSender());
+        result.put("name", chat.getSender().getNickname());
         result.put("content", chat.getContent());
         result.put("chatroom_id", chat.getChatroom().getId());
         return result;
@@ -95,7 +93,10 @@ public class ChatController {
     }
 
     //채팅방 채팅 메세지 기록 조회
-
+    @GetMapping("/chattinglist/{roomId}")
+    public List<ChatMessageResponseDTO> getAllMessage(@PathVariable Long roomId) {
+        return chatService.getAllMessage(roomId).stream().map(ChatMessageConverter::toChatRoomResponseDTO).toList();
+    }
 
 
 }
