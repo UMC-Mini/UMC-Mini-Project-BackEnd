@@ -22,10 +22,10 @@ public class Chatroom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String roomName;
 
     //@Column(nullable = false)
-    private int userCount; //채팅방 인원수
+    private Long userCount; //채팅방 인원수
 
     //채팅방 채팅 다대일 매핑
     @OneToMany(mappedBy = "chatroom", cascade = CascadeType.ALL)

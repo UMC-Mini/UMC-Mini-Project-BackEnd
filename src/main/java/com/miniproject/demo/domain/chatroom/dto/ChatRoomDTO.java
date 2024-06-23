@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class ChatMessageDTO {
-    String sender;
-    String content;
+public class ChatRoomDTO {
+    String roomName;
+    Long userCount;
 }

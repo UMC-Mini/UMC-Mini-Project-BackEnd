@@ -1,5 +1,6 @@
 package com.miniproject.demo.domain.chatroom.controller;
 
+import com.miniproject.demo.domain.chatroom.dto.ChatRoomDTO;
 import com.miniproject.demo.domain.chatroom.entity.ChatMessage;
 import com.miniproject.demo.domain.chatroom.entity.Chatroom;
 import com.miniproject.demo.domain.chatroom.repository.ChatMessageRepository;
@@ -15,15 +16,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller
+@RestController
 public class ChatController {
 
-    @Autowired
-    private ChatService chatService;
+    private final ChatService chatService;
 
-    @PostMapping("/chatrooms")
-    public Chatroom createRoom(@RequestParam String name, @RequestParam Integer userCount) {
-        return chatService.createRoom(name, userCount);
+    public ChatController(ChatService chatService) {
+        this.chatService = chatService;
     }
 
     //메세지 보내기 컨트롤러
@@ -33,9 +32,9 @@ public class ChatController {
         String sender = message.get("sender").toString();
         String content = message.get("content").toString();
         Integer chatroomIdInteger = (Integer) message.get("chatroom");
-        long chatroomId = chatroomIdInteger.longValue();
+        long roomId = chatroomIdInteger.longValue();
 
-        Chatroom room = chatService.getChatroomById(chatroomId);
+        Chatroom room = chatService.getChatRoomById(roomId);
 
         ChatMessage message1 = ChatMessage.builder()
                 .sender(sender)
@@ -60,16 +59,26 @@ public class ChatController {
         return chatMessage;
     }
 
-}
 
-@RestController
-class ChatHistoryController {
-    @Autowired
-    private ChatService chatService;
+    //채팅방 생성 컨트롤러
+    @PostMapping("/chatrooms")
+    public Chatroom createRoom(@RequestBody ChatRoomDTO chatRoomDTO) {
+        return chatService.createRoom(chatRoomDTO.getRoomName(), chatRoomDTO.getUserCount());
+    }
+
+    //채팅방 전체 조회
+    @GetMapping("chatrooms")
+    public List<Chatroom> getAllChatRoom() {
+        return chatService.getAllChatRoom();
+    }
 
     //채팅 기록 전체 조회
     @GetMapping("/chat/history/{roomId}")
     public List<ChatMessage> getChatHistory(@PathVariable Long roomId) {
         return chatService.getMessageById(roomId);
     }
+
 }
+
+
+
