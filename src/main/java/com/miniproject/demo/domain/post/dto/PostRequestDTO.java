@@ -1,6 +1,7 @@
 package com.miniproject.demo.domain.post.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +29,9 @@ public class PostRequestDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Password {
+    public static class GetPost {
+        @NotNull
+        private Long postId;
         private String password;
     }
 

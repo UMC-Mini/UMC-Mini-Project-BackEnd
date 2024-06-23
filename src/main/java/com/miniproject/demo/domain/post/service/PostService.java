@@ -16,10 +16,10 @@ public interface PostService {
 
     /**
      * 게시글 하나를 가져오는 메소드
-     * @param id 찾을 게시글의 id
+     * @param request 게시글 하나 가져오는 요청
      * @return 찾은 게시글 하나
      */
-    Post getPost(Long id, PostRequestDTO.Password password);
+    Post getPost(PostRequestDTO.GetPost request);
 
     /**
      * 게시글 여러개 가져오는 메소드, Keyword로 검색 및 페이지네이션 포함

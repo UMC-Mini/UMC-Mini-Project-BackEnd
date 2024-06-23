@@ -27,10 +27,9 @@ public class PostController {
         return BaseResponse.onSuccess(PostConverter.toJoinResultDTO(post));
     }
 
-    @GetMapping("/posts/{postId}")
-    public BaseResponse<PostResponseDTO.PreviewResultDTO> getPost(@PathVariable Long postId,
-                                                                  @RequestBody(required = false) PostRequestDTO.Password password) {
-        Post post = postService.getPost(postId, password);
+    @PostMapping("/posts/get")
+    public BaseResponse<PostResponseDTO.PreviewResultDTO> getPost(@RequestBody PostRequestDTO.GetPost request) {
+        Post post = postService.getPost(request);
         return BaseResponse.onSuccess(PostConverter.toPreviewResultDTO(post));
     }
 
