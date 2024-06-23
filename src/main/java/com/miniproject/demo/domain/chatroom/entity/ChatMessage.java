@@ -1,5 +1,7 @@
 package com.miniproject.demo.domain.chatroom.entity;
 
+import com.miniproject.demo.domain.account.entity.User;
+import com.miniproject.demo.global.response.code.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Getter
-public class ChatMessage {
+public class ChatMessage extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,8 +22,9 @@ public class ChatMessage {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
-    private String sender;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "sender_id")
+    private User sender;
 
 //    private String roomId;
 
@@ -30,4 +33,7 @@ public class ChatMessage {
     @JoinColumn(name = "chatroom_id")
     private Chatroom chatroom;
 
+    public void setUser(User sender) {
+        this.sender = sender;
+    }
 }

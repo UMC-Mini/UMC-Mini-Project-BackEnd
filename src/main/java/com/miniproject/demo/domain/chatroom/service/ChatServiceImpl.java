@@ -8,6 +8,8 @@ import com.miniproject.demo.domain.chatroom.repository.ChatMessageRepository;
 import com.miniproject.demo.domain.chatroom.repository.ChatRoomRepository;
 import com.miniproject.demo.domain.chatroom.repository.UserChatRepository;
 import com.miniproject.demo.domain.mapping.UserChatRoom;
+import com.miniproject.demo.global.error.handler.UserHandler;
+import com.miniproject.demo.global.response.code.status.ErrorStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,7 +48,9 @@ public class ChatServiceImpl implements ChatService {
 
     //메세지 저장
     @Override
-    public ChatMessage saveMessage(ChatMessage chatMessage) {
+    public ChatMessage saveMessage(ChatMessage chatMessage, Long sender) {
+        User user = userRepository.findById(sender).orElseThrow(() -> new UserHandler(ErrorStatus._NOT_FOUND_USER));
+        chatMessage.setUser(user);
         return chatMessageRepository.save(chatMessage);
     }
 
@@ -84,10 +88,13 @@ public class ChatServiceImpl implements ChatService {
         userChatRepository.save(userChatRoom);
         return userChatRoom.getUser().getId();
     }
+
+    //메세지 전체 조회
+    @Override
+    public List<ChatMessage> getAllMessage(Long roomId) {
+        Chatroom chatroom = chatRoomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("없는 채팅방 입니다" + roomId));
+        return chatMessageRepository.findAllByChatroomOrderByCreatedAtDesc(chatroom);
+    }
 }
 
-//    @Override
-//    public Chatroom joinRoom(Long roomId) {
-//        Chatroom chatroom = chatRoomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("존재하지 않는 채팅방" + roomId));
-//    }
 

@@ -37,7 +37,7 @@ public interface ChatService {
     Chatroom createRoom(String roomName, Long userCount ,String password);
 
     //메세지 저장
-    ChatMessage saveMessage(ChatMessage chatMessage);
+    ChatMessage saveMessage(ChatMessage chatMessage, Long sender);
 
     //메세지 조회
     List<ChatMessage> getMessageById(Long roomId);
@@ -52,4 +52,6 @@ public interface ChatService {
     List<String> getAllUser(Long roomId);
 
     Long joinRoom(Long roomId, Long userId);
+    
+    List<ChatMessage> getAllMessage(Long roomId);
 }
