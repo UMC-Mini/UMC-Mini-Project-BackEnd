@@ -36,13 +36,13 @@ public interface PostService {
      * @param dto 수정할 게시글의 내용
      * @return 수정이 완료된 게시글
      */
-    Post updatePost(Long id, PostRequestDTO.UpdatePostDTO dto);
+    Post updatePost(Authentication authentication, Long id, PostRequestDTO.UpdatePostDTO dto);
 
     /**
      * 게시글 삭제 메소드
      * @param id 삭제할 게시글의 id
      */
-    void deletePost(Long id);
+    void deletePost(Authentication authentication, Long id);
 
     /**
      * 총 페이지 개수 반환

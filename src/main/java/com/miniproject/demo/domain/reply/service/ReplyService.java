@@ -40,7 +40,7 @@ public interface ReplyService {
      * 댓글 삭제 메소드
      * @param id 삭제할 댓글의 id
      */
-    void deleteReply(Long id);
+    void deleteReply(Authentication authentication, Long id);
 
     /**
      * 댓글 수정하기
@@ -48,7 +48,7 @@ public interface ReplyService {
      * @param dto 댓글 수정 요청 dto
      * @return 수정된 댓글
      */
-    Reply updateReply(Long id, ReplyRequestDTO.UpdateReplyDTO dto);
+    Reply updateReply(Authentication authentication, Long id, ReplyRequestDTO.UpdateReplyDTO dto);
 
     /**
      * 댓글이 존재하는 지 확인하기

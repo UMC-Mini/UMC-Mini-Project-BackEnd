@@ -93,21 +93,27 @@ public class PostServiceImpl implements PostService{
 
     @Override
     @Transactional
-    public Post updatePost(Long id, PostRequestDTO.UpdatePostDTO dto) {
+    public Post updatePost(Authentication authentication, Long id, PostRequestDTO.UpdatePostDTO dto) {
         Post post = postRepository.findById(id).orElseThrow(() ->
                 new PostHandler(ErrorStatus.POST_NOT_FOUND));
 
+        if (!((PrincipalDetails) authentication.getPrincipal()).getUserId().equals(post.getUser().getId())) {
+            throw new PostHandler(ErrorStatus.POST_NOT_WRITER);
+        }
         post.updatePost(dto);
         return post;
     }
 
     @Override
     @Transactional
-    public void deletePost(Long id) {
-        if (postRepository.existsById(id)) {
-            postRepository.deleteById(id);
+    public void deletePost(Authentication authentication, Long id) {
+        Post post = postRepository.findById(id).orElseThrow(() ->
+                new PostHandler(ErrorStatus.REPLY_NOT_FOUND));
 
+        if (!((PrincipalDetails) authentication.getPrincipal()).getUserId().equals(post.getUser().getId())) {
+            throw new PostHandler(ErrorStatus.POST_NOT_WRITER);
         }
+        postRepository.deleteById(id);
     }
 
     @Override

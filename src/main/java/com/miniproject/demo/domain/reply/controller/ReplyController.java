@@ -47,15 +47,16 @@ public class ReplyController {
     }
 
     @DeleteMapping("/replies/{replyId}")
-    public BaseResponse<Long> deleteReply(@PathVariable Long replyId) {
-        replyService.deleteReply(replyId);
+    public BaseResponse<Long> deleteReply(Authentication authentication, @PathVariable Long replyId) {
+        replyService.deleteReply(authentication, replyId);
         return BaseResponse.onSuccess(replyId);
     }
 
     @PatchMapping("/replies/{replyId}")
-    public BaseResponse<ReplyResponseDTO.PreviewResultDTO> updateReply(@PathVariable Long replyId,
+    public BaseResponse<ReplyResponseDTO.PreviewResultDTO> updateReply(Authentication authentication,
+                                                                       @PathVariable Long replyId,
                                                                        @RequestBody ReplyRequestDTO.UpdateReplyDTO dto) {
-        Reply reply = replyService.updateReply(replyId, dto);
+        Reply reply = replyService.updateReply(authentication, replyId, dto);
         return BaseResponse.onSuccess(ReplyConverter.toPreviewResultDTO(reply));
     }
 }
