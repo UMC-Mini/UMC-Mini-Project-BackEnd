@@ -16,6 +16,10 @@ public class LoginResponseDTO {
 
     private Long userId;
 
+    private String userName;
+
+    private String userNickname;
+
     private LocalDateTime createdAt;
 
     private String token;
@@ -23,6 +27,8 @@ public class LoginResponseDTO {
     public static LoginResponseDTO from(User user, String token) {
         return LoginResponseDTO.builder()
                 .userId(user.getId())
+                .userName(user.getName())
+                .userNickname(user.getNickname())
                 .createdAt(LocalDateTime.now())
                 .token(token)
                 .build();

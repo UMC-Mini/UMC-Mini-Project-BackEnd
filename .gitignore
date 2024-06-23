@@ -98,4 +98,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Lock file
+*.lock
+
 application-local.yml
